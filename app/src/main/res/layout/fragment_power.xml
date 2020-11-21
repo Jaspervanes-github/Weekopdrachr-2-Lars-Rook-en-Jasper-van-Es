@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#CF1818"
-    tools:context=".ui.power.PowerFragment">
+    tools:context=".ui.power.PowerFragment"
+    android:id="@+id/main_Fragment">
 
 
 

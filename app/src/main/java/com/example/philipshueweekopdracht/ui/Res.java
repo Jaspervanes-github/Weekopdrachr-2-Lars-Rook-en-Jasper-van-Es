@@ -29,7 +29,8 @@ public class Res extends Resources {
 
         switch (getResourceEntryName(id)){
             case "fade_color":
-                return Color.rgb(data.getColorValueRed(), data.getColorValueGreen(), data.getColorValueBlue());
+                //return Color.rgb(data.getColorValueRed(), data.getColorValueGreen(), data.getColorValueBlue());
+                return 1;
 
             default:
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
