@@ -18,16 +18,14 @@ public class PowerFragment extends Fragment {
 
     private PowerViewModel powerViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        powerViewModel =
-                new ViewModelProvider(this).get(PowerViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_power, container, false);
-        final TextView textView = root.findViewById(R.id.text_power);
+        powerViewModel = new ViewModelProvider(this).get(PowerViewModel.class);
+        //final TextView textView = root.findViewById(R.id.text_power);
         powerViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+               // textView.setText(s);
             }
         });
         return root;
