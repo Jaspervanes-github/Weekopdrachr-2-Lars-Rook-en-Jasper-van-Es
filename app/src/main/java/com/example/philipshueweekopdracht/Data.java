@@ -16,8 +16,10 @@ public class Data {
     }
 
     private ArrayList<Lamp> allLamps;
+    private Client client;
 
     public Data(){
+        this.client = new Client();
         this.allLamps = new ArrayList<>();
     }
 

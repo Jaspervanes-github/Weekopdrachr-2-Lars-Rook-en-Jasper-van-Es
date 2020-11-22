@@ -17,7 +17,7 @@ import okhttp3.Response;
 
 public class Client {
 
-    public OkHttpClient client;
+    private OkHttpClient client;
     private String username;
     private String ipAddress;
 
@@ -139,9 +139,8 @@ public class Client {
         ArrayList<Lamp> lampList = new ArrayList<>();
 
         String response = createResponse(createGetRequest("/lights"));
-
         //TODO: convert the reponse to lamp objects and put them in the lampList
-
+        //Data.getInstance().setLamps();
         return lampList;
     }
 }
