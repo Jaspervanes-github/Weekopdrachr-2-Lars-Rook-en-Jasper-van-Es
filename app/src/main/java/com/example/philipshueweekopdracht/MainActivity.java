@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.philipshueweekopdracht.ui.Adapter;
 import com.example.philipshueweekopdracht.ui.Res;
 import com.example.philipshueweekopdracht.ui.power.PowerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_botom_navigationview);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener);
+
 
 
     }
