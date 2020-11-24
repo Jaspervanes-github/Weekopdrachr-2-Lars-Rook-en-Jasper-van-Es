@@ -3,6 +3,9 @@ package com.example.philipshueweekopdracht;
 import android.graphics.Color;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,11 +41,24 @@ public class Client {
 
     private String createUsername() {
         //method to create username
-        String username = createResponse(
+        String responseString = createResponse(
                 new Request.Builder()
                         .url("http://" + this.ipAddress + ":" + this.port + "/api")
                         .post(RequestBody.create("{\"devicetype\":\"my_hue_app#laptop Jasper\"}", JSON))
                         .build());
+
+        String username = "";
+        try {
+            JSONArray response = new JSONArray(responseString);
+            username = response.
+                    getJSONObject(0).
+                    getJSONObject("success").
+                    getString("username");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            //TODO: handle error data
+        }
+
         return username;
     }
 
