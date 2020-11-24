@@ -20,6 +20,7 @@ public class Client {
     private OkHttpClient client;
     private String username;
     private String ipAddress;
+    private int port;
 
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
@@ -27,43 +28,43 @@ public class Client {
     public Client() {
         this.client = new OkHttpClient();
         this.ipAddress = getBridgeIpAddress();
+        this.port = 8000;
         this.username = createUsername();
     }
 
     private String getBridgeIpAddress() {
-        //TODO: method for ipadress
-        return "localhost";
+        return "10.0.2.2";
     }
 
     private String createUsername() {
         //method to create username
         String username = createResponse(
                 new Request.Builder()
-                        .url("https://" + this.ipAddress + "/api")
+                        .url("http://" + this.ipAddress + ":" + this.port + "/api")
                         .post(RequestBody.create("{\"devicetype\":\"my_hue_app#laptop Jasper\"}", JSON))
                         .build());
         return username;
     }
 
     private Request createGetRequest(String url) {
-        Request request = new Request.Builder().url("https://" + this.ipAddress + "/api/" + this.username + url).build();
+        Request request = new Request.Builder().url("http://" + this.ipAddress + ":" + this.port + "/api/" + this.username + url).build();
         return request;
     }
 
     private Request createPostRequest(String url, String json) {
         RequestBody requestBody = RequestBody.create(json, JSON);
-        Request request = new Request.Builder().url("https://" + this.ipAddress + "/api/" + this.username + url).post(requestBody).build();
+        Request request = new Request.Builder().url("http://" + this.ipAddress + ":" + this.port + "/api/" + this.username + url).post(requestBody).build();
         return request;
     }
 
     private Request createPutRequest(String url, String json) {
         RequestBody requestBody = RequestBody.create(json, JSON);
-        Request request = new Request.Builder().url("https://" + this.ipAddress + "/api/" + this.username + url).put(requestBody).build();
+        Request request = new Request.Builder().url("http://" + this.ipAddress + ":" + this.port + "/api/" + this.username + url).put(requestBody).build();
         return request;
     }
 
     private Request createDeleteRequest(String url) {
-        Request request = new Request.Builder().url("https://" + this.ipAddress + "/api/" + this.username + url).delete().build();
+        Request request = new Request.Builder().url("http://" + this.ipAddress + ":" + this.port + "/api/" + this.username + url).delete().build();
         return request;
     }
 
