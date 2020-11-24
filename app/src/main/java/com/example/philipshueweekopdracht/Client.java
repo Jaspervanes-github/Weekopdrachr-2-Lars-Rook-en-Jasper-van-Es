@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -152,12 +153,34 @@ public class Client {
         return response.contains("success");
     }
 
-    public ArrayList<Lamp> getAllLamps() {
+    public void getAllLamps() {
         ArrayList<Lamp> lampList = new ArrayList<>();
 
-        String response = createResponse(createGetRequest("/lights"));
-        //TODO: convert the reponse to lamp objects and put them in the lampList
-        //Data.getInstance().setLamps();
-        return lampList;
+        String responseString = createResponse(createGetRequest("/lights"));
+        try {
+            JSONObject response = new JSONObject(responseString);
+            Iterator<String> keys = response.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONObject object = response.getJSONObject(key);
+
+                int color = Color.HSVToColor(new float[]{
+                        (float)((object.getJSONObject("state").getInt("hue")/65535.0)*360.0),
+                        (float)(object.getJSONObject("state").getInt("sat")/255.0),
+                        (float)(object.getJSONObject("state").getInt("bri")/255.0)});
+
+                    lampList.add(new Lamp(
+                            key,
+                            object.getString("name"),object.getJSONObject("state").getBoolean("on"),
+                            Color.red(color),
+                            Color.green(color),
+                            Color.blue(color)));
+            }
+            Data.getInstance().setAllLamps(lampList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 }
