@@ -7,9 +7,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.philipshueweekopdracht.ui.Adapter;
@@ -19,7 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Data data = Data.getInstance();
     private Res res;
     @Override
     public Resources getResources() {
@@ -32,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_botom_navigationview);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        setContentView(R.layout.activity_main_relative);
+        BottomNavigationView navView = findViewById(R.id.nav_viewer);
         navView.setOnNavigationItemSelectedListener(navListener);
 
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PowerFragment()).commit();
 
     }
 
@@ -55,4 +57,5 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
 }

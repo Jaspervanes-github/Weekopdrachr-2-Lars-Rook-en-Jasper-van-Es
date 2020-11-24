@@ -15,11 +15,27 @@ public class Data {
         }
     }
 
+    private boolean dataSet;
     private ArrayList<Lamp> allLamps;
 
     public Data(){
         this.allLamps = new ArrayList<>();
+        this.dataSet = false;
     }
 
+    public boolean isDataSet() {
+        return dataSet;
+    }
 
+    public void setDataSet(boolean dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    public ArrayList<Lamp> getAllLamps() {
+        return allLamps;
+    }
+
+    public void setAllLamps(ArrayList<Lamp> allLamps) {
+        this.allLamps = allLamps;
+    }
 }

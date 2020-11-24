@@ -22,7 +22,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     private List<Lamp> allLamps;
     private OnItemClickListener clickListener;
 
-    public Adapter(Context cntxt, List<Lamp> lamps, OnItemClickListener listener, Data data){
+    public Adapter(Context cntxt, List<Lamp> lamps, OnItemClickListener listener){
         this.context = cntxt;
         this.allLamps = lamps;
         this.clickListener = listener;
