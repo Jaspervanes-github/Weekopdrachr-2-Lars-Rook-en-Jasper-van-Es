@@ -106,81 +106,131 @@ public class Client {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //TODO: return response.body().string();
+                //TODO: handle data
+                String responseString = response.body().string();
+
+                try {
+                    JSONArray responseData = new JSONArray(responseString);
+
+                    //if it is a lampList
+                    if (responseData.getJSONObject(0).has("1")) {
+                        ArrayList<Lamp> lampList = new ArrayList<>();
+
+                        try {
+                            JSONObject responseObject = new JSONObject(responseString);
+                            Iterator<String> keys = responseObject.keys();
+
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                JSONObject object = responseObject.getJSONObject(key);
+
+                                int color = Color.HSVToColor(new float[]{
+                                        (float) ((object.getJSONObject("state").getInt("hue") / 65535.0) * 360.0),
+                                        (float) (object.getJSONObject("state").getInt("sat") / 255.0),
+                                        (float) (object.getJSONObject("state").getInt("bri") / 255.0)});
+
+                                lampList.add(new Lamp(
+                                        key,
+                                        object.getString("name"), object.getJSONObject("state").getBoolean("on"),
+                                        Color.red(color),
+                                        Color.green(color),
+                                        Color.blue(color)));
+                            }
+                            Data.getInstance().setAllLamps(lampList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //if it isn't a lampList
+                    } else {
+
+                        for (int i = 0; i < responseData.length(); i++) {
+                            JSONObject object = responseData.getJSONObject(i);
+
+                            //if the response is valid
+                            if (object.has("success")) {
+                                //TODO: handle data
+                                handleData(object.getJSONObject("success"));
+                            }
+
+                            //if the response isn't valid
+                            else {
+                                //TODO: handle error responses
+                                //throw new Exception();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    public boolean turnLampOn(int id) {
-        String response = createResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":true}"));
-        return response.contains("success");
+    private void handleData(JSONObject responseObject) {
+        Iterator<String> keys = responseObject.keys();
+        String key = keys.next();
+
+        int id = Integer.parseInt(key.substring(9,key.lastIndexOf("/",key.indexOf("state"))));
+
+        try {
+            if (key.contains("/state/on")) {
+                Data.getInstance().getAllLamps().get(id).setPower(responseObject.getBoolean(key));
+            }else if(key.contains("/state/bri")){
+                Data.getInstance().getAllLamps().get(id).setBriValue(responseObject.getInt(key));
+            }else if(key.contains("/state/sat")){
+                Data.getInstance().getAllLamps().get(id).setSatValue(responseObject.getInt(key));
+            }else if(key.contains("/name")){
+                Data.getInstance().getAllLamps().get(id).setNameLamp(responseObject.getString(key));
+            }else if(key.contains("/state/hue")){
+                Data.getInstance().getAllLamps().get(id).setHueValue(responseObject.getInt(key));
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
     }
 
-    public boolean turnLampOff(int id) {
-        String response = createResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":false}"));
-        return response.contains("success");
+    public void turnLampOn(int id) {
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":true}"));
     }
 
-    public boolean deleteLamp(int id) {
-        String response = createResponse(createDeleteRequest("/lights/" + id));
-        return response.contains("success");
+    public void turnLampOff(int id) {
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":false}"));
     }
 
-    public boolean setLampBrightness(int id, int brightness) {
-        String response = createResponse(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + brightness + "}"));
-        return response.contains("success");
+    public void deleteLamp(int id) {
+        createAsyncResponse(createDeleteRequest("/lights/" + id));
     }
 
-    public boolean setLampSaturation(int id, int saturation) {
-        String response = createResponse(createPutRequest("/lights/" + id + "/state", "{\"sat\":" + saturation + "}"));
-        return response.contains("success");
+    public void setLampHue(int id, int hue) {
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + hue + "}"));
     }
 
-    public boolean setLampColor(int id, int r, int g, int b) {
+    public void setLampSaturation(int id, int saturation) {
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"sat\":" + saturation + "}"));
+    }
+
+    public void setLampBrightness(int id, int brightness) {
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + brightness + "}"));
+    }
+
+    public void setLampColor(int id, int r, int g, int b) {
         float[] hsb = {};
         Color.RGBToHSV(r, g, b, hsb);
 
-        String response = createResponse(createPutRequest("/lights/" + id + "/state", "{\n" +
+        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\n" +
                 "    \"hue\":" + hsb[0] + ",\n" +
                 "    \"sat\":" + hsb[1] + ",\n" +
                 "    \"bri\":" + hsb[2] + "\n" +
                 "}"));
-        return response.contains("success");
     }
 
-    public boolean setLampName(int id, String name) {
-        String response = createResponse(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}"));
-        return response.contains("success");
+    public void setLampName(int id, String name) {
+        createAsyncResponse(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}"));
     }
 
     public void getAllLamps() {
-        ArrayList<Lamp> lampList = new ArrayList<>();
-
-        String responseString = createResponse(createGetRequest("/lights"));
-        try {
-            JSONObject response = new JSONObject(responseString);
-            Iterator<String> keys = response.keys();
-
-            while(keys.hasNext()) {
-                String key = keys.next();
-                JSONObject object = response.getJSONObject(key);
-
-                int color = Color.HSVToColor(new float[]{
-                        (float)((object.getJSONObject("state").getInt("hue")/65535.0)*360.0),
-                        (float)(object.getJSONObject("state").getInt("sat")/255.0),
-                        (float)(object.getJSONObject("state").getInt("bri")/255.0)});
-
-                    lampList.add(new Lamp(
-                            key,
-                            object.getString("name"),object.getJSONObject("state").getBoolean("on"),
-                            Color.red(color),
-                            Color.green(color),
-                            Color.blue(color)));
-            }
-            Data.getInstance().setAllLamps(lampList);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        createAsyncResponse(createGetRequest("/lights"));
     }
 
 }

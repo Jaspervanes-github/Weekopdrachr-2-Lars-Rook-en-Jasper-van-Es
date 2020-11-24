@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PowerFragment()).commit();
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -57,5 +57,4 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
 }
