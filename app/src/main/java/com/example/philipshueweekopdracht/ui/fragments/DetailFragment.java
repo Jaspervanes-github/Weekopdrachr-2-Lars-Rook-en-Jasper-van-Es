@@ -1,4 +1,4 @@
-package com.example.philipshueweekopdracht.ui.refresh;
+package com.example.philipshueweekopdracht.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,23 +13,24 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.philipshueweekopdracht.R;
+import com.example.philipshueweekopdracht.ui.ViewModel;
 
-public class RefreshFragment extends Fragment {
+public class DetailFragment extends Fragment {
 
-    private RefreshViewModel refreshViewModel;
+    private ViewModel refreshViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         refreshViewModel =
-                new ViewModelProvider(this).get(RefreshViewModel.class);
+                new ViewModelProvider(this).get(ViewModel.class);
         View root = inflater.inflate(R.layout.fragment_refresh, container, false);
         final TextView textView = root.findViewById(R.id.text_refresh);
-        refreshViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        refreshViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }
