@@ -1,5 +1,7 @@
 package com.example.philipshueweekopdracht;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class Data {
@@ -18,6 +20,7 @@ public class Data {
     private boolean dataSet;
     private ArrayList<Lamp> allLamps;
     private Client client;
+    private Context context;
 
     public Data(){
         this.client = new Client();
@@ -47,5 +50,13 @@ public class Data {
 
     public void deleteLamp(int id){
         this.allLamps.remove(id);
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_relative);
+        Data.getInstance().setContext(this);
         BottomNavigationView navView = findViewById(R.id.nav_viewer);
         navView.setOnNavigationItemSelectedListener(navListener);
 

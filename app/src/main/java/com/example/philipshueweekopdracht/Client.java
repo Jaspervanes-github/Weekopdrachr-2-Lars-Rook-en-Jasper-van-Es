@@ -1,7 +1,9 @@
 package com.example.philipshueweekopdracht;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -49,6 +51,9 @@ public class Client {
     }
 
     private String createUsername() {
+        Message.createDialog("Click the link button to pair the app with the Philips Hue Bridge");
+        //TODO: make the dialog blocking
+
         //method to create username
         String responseString = createResponse(
                 new Request.Builder()
@@ -65,7 +70,8 @@ public class Client {
                     getString("username");
         } catch (JSONException e) {
             e.printStackTrace();
-            //TODO: handle error data
+
+            createUsername();
         }
 
         return username;
