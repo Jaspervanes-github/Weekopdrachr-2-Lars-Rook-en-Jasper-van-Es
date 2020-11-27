@@ -6,4 +6,8 @@
 
     <string name="button_del">remove</string>
     <string name="button_power">on/off</string>
+
+    <string name="textViewR">R</string>
+    <string name="textViewG">G</string>
+    <string name="textViewB">B</string>
 </resources>

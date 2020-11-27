@@ -9,12 +9,12 @@
         android:id="@+id/navigation_power"
         android:name="com.example.philipshueweekopdracht.ui.fragments.MainFragment"
         android:label="@string/title_power"
-        tools:layout="@layout/fragment_power" />
+        tools:layout="@layout/fragment_main" />
 
     <fragment
         android:id="@+id/navigation_refresh"
         android:name="com.example.philipshueweekopdracht.ui.fragments.DetailFragment"
         android:label="@string/title_refresh"
-        tools:layout="@layout/fragment_refresh" />
+        tools:layout="@layout/fragment_detail" />
 
 </navigation>

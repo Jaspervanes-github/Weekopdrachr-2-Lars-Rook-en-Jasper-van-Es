@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +34,7 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_power, container, false);
+        View root = inflater.inflate(R.layout.fragment_main, container, false);
         powerViewModel = new ViewModelProvider(this).get(ViewModel.class);
         //final TextView textView = root.findViewById(R.id.text_power);
 //        powerViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -85,6 +83,7 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
         Lamp selectedLamp = data.getAllLamps().get(clickPosition);
         main.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetailFragment()).commit();
     }
+
 
 
 }
