@@ -40,4 +40,12 @@ public class Data {
     public void setAllLamps(ArrayList<Lamp> allLamps) {
         this.allLamps = allLamps;
     }
+
+    public void AddLamp(Lamp lamp){
+        this.allLamps.add(lamp);
+    }
+
+    public void deleteLamp(int id){
+        this.allLamps.remove(id);
+    }
 }

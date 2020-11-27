@@ -1,6 +1,7 @@
 package com.example.philipshueweekopdracht;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -25,18 +26,25 @@ public class Client {
     private String username;
     private String ipAddress;
     private int port;
+    private boolean isConnected;
 
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 
     public Client() {
         this.client = new OkHttpClient();
-        this.ipAddress = getBridgeIpAddress();
         this.port = 8000;
+        this.isConnected = false;
+    }
+
+    private void Connect() {
+        this.ipAddress = getBridgeIpAddress();
         this.username = createUsername();
+        this.isConnected = true;
     }
 
     private String getBridgeIpAddress() {
+        //Ipaddress of the emulator
         return "10.0.2.2";
     }
 
@@ -96,141 +104,293 @@ public class Client {
         return responseString;
     }
 
-    private void createAsyncResponse(Request request) {
-        client.newCall(request).enqueue(new Callback() {
+    public void turnLampOn(int id) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"on\":true}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in turnLampOn()");
+                }
 
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //TODO: handle data
-                String responseString = response.body().string();
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().getAllLamps().get(id).setPower(true);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response turnLampOn()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
 
-                try {
-                    JSONArray responseData = new JSONArray(responseString);
+    public void turnLampOff(int id) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"on\":false}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in turnLampOff()");
+                }
 
-                    //if it is a lampList
-                    if (responseData.getJSONObject(0).has("1")) {
-                        ArrayList<Lamp> lampList = new ArrayList<>();
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
 
-                        try {
-                            JSONObject responseObject = new JSONObject(responseString);
-                            Iterator<String> keys = responseObject.keys();
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                //DELETELAMP
+                                Data.getInstance().getAllLamps().get(id).setPower(false);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response turnLampOff()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void deleteLamp(int id) {
+        if (this.isConnected)
+            client.newCall(createDeleteRequest("/lights/" + id)).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in deleteLamp()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().deleteLamp(id);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response deleteLamp()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void setLampHue(int id, int hue) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + hue + "}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in setLampHue()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().getAllLamps().get(id).setHueValue(hue);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response setLampHue()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void setLampSaturation(int id, int saturation) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"sat\":" + saturation + "}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in setLampSaturation()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().getAllLamps().get(id).setSatValue(saturation);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response setLampSaturation()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void setLampBrightness(int id, int brightness) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + brightness + "}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in setLampBrightness()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().getAllLamps().get(id).setBriValue(brightness);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response setLampBrightness()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void setLampColor(int id, int r, int g, int b) {
+        if (this.isConnected) {
+            float[] hsb = {};
+            Color.RGBToHSV(r, g, b, hsb);
+
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\n" +
+                    "    \"hue\":" + hsb[0] + ",\n" +
+                    "    \"sat\":" + hsb[1] + ",\n" +
+                    "    \"bri\":" + hsb[2] + "\n" +
+                    "}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in setLampName()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+                        boolean changeColorSuccesfull = true;
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (!responseObject.has("success")) {
+                                changeColorSuccesfull = false;
+                                break;
+                            }
+                        }
+                        if (changeColorSuccesfull) {
+                            Data.getInstance().getAllLamps().get(id).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
+                            Data.getInstance().getAllLamps().get(id).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
+                            Data.getInstance().getAllLamps().get(id).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    public void setLampName(int id, String name) {
+        if (this.isConnected)
+            client.newCall(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in setLampName()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        JSONArray responseArray = new JSONArray(response.body().string());
+
+                        for (int i = 0; i < responseArray.length(); i++) {
+                            JSONObject responseObject = responseArray.getJSONObject(i);
+                            if (responseObject.has("success")) {
+                                Data.getInstance().getAllLamps().get(id).setNameLamp(name);
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response setLampName()");
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    }
+
+    public void getAllLamps() {
+        if (this.isConnected)
+            client.newCall(createGetRequest("/lights")).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.d("FAILURE", "In OnFailure() in getAllLamps()");
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        if (response.isSuccessful()) {
+                            ArrayList<Lamp> lampList = new ArrayList<>();
+
+                            JSONObject responseArray = new JSONObject(response.body().string());
+                            Iterator<String> keys = responseArray.keys();
 
                             while (keys.hasNext()) {
                                 String key = keys.next();
-                                JSONObject object = responseObject.getJSONObject(key);
+                                JSONObject responseObject = responseArray.getJSONObject(key);
 
                                 int color = Color.HSVToColor(new float[]{
-                                        (float) ((object.getJSONObject("state").getInt("hue") / 65535.0) * 360.0),
-                                        (float) (object.getJSONObject("state").getInt("sat") / 255.0),
-                                        (float) (object.getJSONObject("state").getInt("bri") / 255.0)});
+                                        (float) ((responseObject.getJSONObject("state").getInt("hue") / 65535.0) * 360.0),
+                                        (float) (responseObject.getJSONObject("state").getInt("sat") / 255.0),
+                                        (float) (responseObject.getJSONObject("state").getInt("bri") / 255.0)});
 
                                 lampList.add(new Lamp(
                                         key,
-                                        object.getString("name"), object.getJSONObject("state").getBoolean("on"),
+                                        responseObject.getString("name"), responseObject.getJSONObject("state").getBoolean("on"),
                                         Color.red(color),
                                         Color.green(color),
                                         Color.blue(color)));
                             }
                             Data.getInstance().setAllLamps(lampList);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            //ERROR
+                            Log.d("ERROR", "Error in response getAllLamps()");
                         }
-
-                        //if it isn't a lampList
-                    } else {
-
-                        for (int i = 0; i < responseData.length(); i++) {
-                            JSONObject object = responseData.getJSONObject(i);
-
-                            //if the response is valid
-                            if (object.has("success")) {
-                                //TODO: handle data
-                                handleData(object.getJSONObject("success"));
-                            }
-
-                            //if the response isn't valid
-                            else {
-                                //TODO: handle error responses
-                                //throw new Exception();
-                            }
-                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
-    }
-
-    private void handleData(JSONObject responseObject) {
-        Iterator<String> keys = responseObject.keys();
-        String key = keys.next();
-
-        int id = Integer.parseInt(key.substring(9,key.lastIndexOf("/",key.indexOf("state"))));
-
-        try {
-            if (key.contains("/state/on")) {
-                Data.getInstance().getAllLamps().get(id).setPower(responseObject.getBoolean(key));
-            }else if(key.contains("/state/bri")){
-                Data.getInstance().getAllLamps().get(id).setBriValue(responseObject.getInt(key));
-            }else if(key.contains("/state/sat")){
-                Data.getInstance().getAllLamps().get(id).setSatValue(responseObject.getInt(key));
-            }else if(key.contains("/name")){
-                Data.getInstance().getAllLamps().get(id).setNameLamp(responseObject.getString(key));
-            }else if(key.contains("/state/hue")){
-                Data.getInstance().getAllLamps().get(id).setHueValue(responseObject.getInt(key));
-            }
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void turnLampOn(int id) {
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":true}"));
-    }
-
-    public void turnLampOff(int id) {
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"on\":false}"));
-    }
-
-    public void deleteLamp(int id) {
-        createAsyncResponse(createDeleteRequest("/lights/" + id));
-    }
-
-    public void setLampHue(int id, int hue) {
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + hue + "}"));
-    }
-
-    public void setLampSaturation(int id, int saturation) {
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"sat\":" + saturation + "}"));
-    }
-
-    public void setLampBrightness(int id, int brightness) {
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + brightness + "}"));
-    }
-
-    public void setLampColor(int id, int r, int g, int b) {
-        float[] hsb = {};
-        Color.RGBToHSV(r, g, b, hsb);
-
-        createAsyncResponse(createPutRequest("/lights/" + id + "/state", "{\n" +
-                "    \"hue\":" + hsb[0] + ",\n" +
-                "    \"sat\":" + hsb[1] + ",\n" +
-                "    \"bri\":" + hsb[2] + "\n" +
-                "}"));
-    }
-
-    public void setLampName(int id, String name) {
-        createAsyncResponse(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}"));
-    }
-
-    public void getAllLamps() {
-        createAsyncResponse(createGetRequest("/lights"));
+            });
     }
 
 }

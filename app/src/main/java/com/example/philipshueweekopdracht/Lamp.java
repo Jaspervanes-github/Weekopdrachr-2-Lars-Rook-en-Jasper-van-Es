@@ -21,7 +21,7 @@ public class Lamp {
         this.colorValueRed = r;
         this.colorValueGreen = g;
         this.colorValueBlue = b;
-        
+
         calculateHSBColor();
     }
 
