@@ -41,7 +41,8 @@ public class Client {
 
     private void Connect() {
         this.ipAddress = getBridgeIpAddress();
-        this.username = createUsername();
+        Message.createLinkButtonDialog(this);
+        createUsername();
         this.isConnected = true;
     }
 
@@ -50,10 +51,7 @@ public class Client {
         return "10.0.2.2";
     }
 
-    private String createUsername() {
-        Message.createDialog("Click the link button to pair the app with the Philips Hue Bridge");
-        //TODO: make the dialog blocking
-
+    public void createUsername() {
         //method to create username
         String responseString = createResponse(
                 new Request.Builder()
@@ -70,11 +68,12 @@ public class Client {
                     getString("username");
         } catch (JSONException e) {
             e.printStackTrace();
-
-            createUsername();
+            Message.createLinkButtonDialog(this);
         }
 
-        return username;
+        if(username != ""){
+            this.username = username;
+        }
     }
 
     private Request createGetRequest(String url) {

@@ -26,4 +26,19 @@ public class Message {
 
         alertDialogBuilder.create().show();
     }
+
+    public static void createLinkButtonDialog(Client client){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Data.getInstance().getContext());
+        alertDialogBuilder.setTitle("Alert");
+        alertDialogBuilder.setMessage("Click the link button on the Philips Hue Bridge to pair the app, make sure you do this before clicking the OK button");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                client.createUsername();
+            }
+        });
+
+        alertDialogBuilder.create().show();
+    }
 }
