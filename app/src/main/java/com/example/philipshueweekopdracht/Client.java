@@ -52,11 +52,9 @@ public class Client {
         this.discoTimer = new Timer(false);
     }
 
-    private void Connect() {
+    public void Connect() {
         this.ipAddress = getBridgeIpAddress();
         Message.createLinkButtonDialog(this);
-        this.isConnected = true;
-        getAllLamps();
     }
 
     private String getBridgeIpAddress() {
@@ -86,6 +84,7 @@ public class Client {
 
         if (username != "") {
             this.username = username;
+            this.isConnected = true;
         }
     }
 
@@ -319,7 +318,7 @@ public class Client {
 
     public void setLampColor(int id, int r, int g, int b) {
         if (this.isConnected) {
-            float[] hsb = {};
+            float[] hsb = new float[3];
             Color.RGBToHSV(r, g, b, hsb);
 
             client.newCall(createPutRequest("/lights/" + id + "/state", "{\n" +
@@ -442,7 +441,6 @@ public class Client {
                 }
             });
     }
-
 
     public void getAllLamps() {
         if (this.isConnected)

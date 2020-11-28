@@ -111,7 +111,7 @@ public class Lamp {
     }
 
     private void calculateHSBColor(){
-        float[] hsb = {};
+        float[] hsb = new float[3];
         Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
 
         setHueValue((int)hsb[0]);

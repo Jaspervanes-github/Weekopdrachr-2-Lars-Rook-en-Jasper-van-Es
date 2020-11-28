@@ -59,4 +59,12 @@ public class Data {
     public void setContext(Context context) {
         this.context = context;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

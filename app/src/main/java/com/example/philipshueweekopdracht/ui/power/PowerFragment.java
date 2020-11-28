@@ -61,18 +61,18 @@ public class PowerFragment extends Fragment implements Adapter.OnItemClickListen
         data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
         data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
         data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
+//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
+//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
+//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
+//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
+//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
+//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
+//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
+//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
+//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
+//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
+//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
+//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
     }
 
     @Override

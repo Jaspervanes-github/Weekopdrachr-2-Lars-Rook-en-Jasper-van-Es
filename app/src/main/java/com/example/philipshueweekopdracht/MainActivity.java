@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -40,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_viewer);
         navView.setOnNavigationItemSelectedListener(navListener);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PowerFragment()).commit();
     }
 
@@ -50,9 +54,11 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.navigation_power: {
                             //switch all lamps on/off
+
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
+
                         }
                     }
                     return true;
