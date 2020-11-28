@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 public class Message {
 
-    public static void createToastMessage(String messageText) {
-        Toast.makeText(Data.getInstance().getContext(), messageText, Toast.LENGTH_SHORT).show();
+    public static void createToastMessage(String messageText,int toastLength ) {
+        Toast.makeText(Data.getInstance().getContext(), messageText, toastLength).show();
     }
 
     public static void createDialog(String messageText) {
@@ -17,7 +17,7 @@ public class Message {
         alertDialogBuilder.setTitle("Alert");
         alertDialogBuilder.setMessage(messageText);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNeutralButton("OK", (dialog, id) -> createToastMessage("Loading..."));
+        alertDialogBuilder.setNeutralButton("OK", (dialog, id) -> createToastMessage("Loading...", Toast.LENGTH_LONG));
 
         alertDialogBuilder.create().show();
     }

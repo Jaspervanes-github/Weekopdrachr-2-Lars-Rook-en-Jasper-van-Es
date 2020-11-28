@@ -128,7 +128,7 @@ public class Client {
                             if (responseObject.has("success")) {
 
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.turnLampOn,
-                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
                                 Data.getInstance().getAllLamps().get(id).setPower(true);
                             } else {
@@ -161,7 +161,7 @@ public class Client {
                             if (responseObject.has("success")) {
                                 //DELETELAMP
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.turnLampOff,
-                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
                                 Data.getInstance().getAllLamps().get(id).setPower(false);
                             } else {
@@ -203,7 +203,7 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.deleteLamp,
-                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
                                 Data.getInstance().deleteLamp(id);
                             } else {
@@ -334,7 +334,7 @@ public class Client {
                         }
                         if (changeColorSuccesfull) {
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampColor,
-                                    Data.getInstance().getAllLamps().get(id).getNameLamp()));
+                                    Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
                             Data.getInstance().getAllLamps().get(id).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
                             Data.getInstance().getAllLamps().get(id).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
@@ -366,7 +366,7 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampName, previousName,
-                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
                                 Data.getInstance().getAllLamps().get(id).setNameLamp(name);
                             } else {
@@ -414,7 +414,7 @@ public class Client {
                                         Color.green(color),
                                         Color.blue(color)));
                             }
-                            Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps));
+                            Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
 
                             Data.getInstance().setAllLamps(lampList);
                         } else {
