@@ -125,6 +125,8 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
+                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been turned on");
+
                                 Data.getInstance().getAllLamps().get(id).setPower(true);
                             } else {
                                 //ERROR
@@ -155,6 +157,8 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 //DELETELAMP
+                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been turned off");
+
                                 Data.getInstance().getAllLamps().get(id).setPower(false);
                             } else {
                                 //ERROR
@@ -166,6 +170,16 @@ public class Client {
                     }
                 }
             });
+    }
+
+    public void setPowerOfAllLamps(boolean state){
+        for(int i = 0; i< Data.getInstance().getAllLamps().size();i++){
+            if(state){
+                turnLampOn(i);
+            }else{
+                turnLampOff(i);
+            }
+        }
     }
 
     public void deleteLamp(int id) {
@@ -184,6 +198,8 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
+                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been deleted");
+
                                 Data.getInstance().deleteLamp(id);
                             } else {
                                 //ERROR
@@ -312,6 +328,8 @@ public class Client {
                             }
                         }
                         if (changeColorSuccesfull) {
+                            Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + "'s color has been changed");
+
                             Data.getInstance().getAllLamps().get(id).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
                             Data.getInstance().getAllLamps().get(id).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
                             Data.getInstance().getAllLamps().get(id).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
@@ -325,6 +343,7 @@ public class Client {
     }
 
     public void setLampName(int id, String name) {
+        String previousName = Data.getInstance().getAllLamps().get(id).getNameLamp();
         if (this.isConnected)
             client.newCall(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}")).enqueue(new Callback() {
                 @Override
@@ -340,6 +359,8 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
+                                Message.createToastMessage("Lamp " + previousName + "'s name has been changed to " + name);
+
                                 Data.getInstance().getAllLamps().get(id).setNameLamp(name);
                             } else {
                                 //ERROR
@@ -386,6 +407,8 @@ public class Client {
                                         Color.green(color),
                                         Color.blue(color)));
                             }
+                            Message.createToastMessage("The list with lamps has been refreshed");
+
                             Data.getInstance().setAllLamps(lampList);
                         } else {
                             //ERROR
