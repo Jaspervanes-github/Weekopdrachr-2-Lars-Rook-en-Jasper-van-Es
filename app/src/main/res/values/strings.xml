@@ -6,4 +6,14 @@
 
     <string name="button_del">delete</string>
     <string name="button_power">on/off</string>
+
+    <string name="turnLampOn">Lamp %1$s has been turned on</string>
+    <string name="turnLampOff">Lamp %1$s has been turned off</string>
+    <string name="deleteLamp">Lamp %1$s has been deleted</string>
+    <string name="setLampColor">Lamp %1$s color has been changed</string>
+    <string name="setLampName">Lamp %1$s name has been changed to %2$s</string>
+    <string name="getAllLamps">The list with lamps has been refreshed</string>
+    <string name="linkButtonDialog">Click the link button on the Philips Hue Bridge to pair the app, make sure you do this before clicking the OK button</string>
+
+
 </resources>

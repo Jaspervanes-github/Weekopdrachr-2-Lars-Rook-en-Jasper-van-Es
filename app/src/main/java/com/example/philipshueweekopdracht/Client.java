@@ -1,6 +1,7 @@
 package com.example.philipshueweekopdracht;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
@@ -71,7 +72,7 @@ public class Client {
             Message.createLinkButtonDialog(this);
         }
 
-        if(username != ""){
+        if (username != "") {
             this.username = username;
         }
     }
@@ -125,7 +126,9 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been turned on");
+
+                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.turnLampOn,
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
 
                                 Data.getInstance().getAllLamps().get(id).setPower(true);
                             } else {
@@ -157,7 +160,8 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 //DELETELAMP
-                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been turned off");
+                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.turnLampOff,
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
 
                                 Data.getInstance().getAllLamps().get(id).setPower(false);
                             } else {
@@ -172,11 +176,11 @@ public class Client {
             });
     }
 
-    public void setPowerOfAllLamps(boolean state){
-        for(int i = 0; i< Data.getInstance().getAllLamps().size();i++){
-            if(state){
+    public void setPowerOfAllLamps(boolean state) {
+        for (int i = 0; i < Data.getInstance().getAllLamps().size(); i++) {
+            if (state) {
                 turnLampOn(i);
-            }else{
+            } else {
                 turnLampOff(i);
             }
         }
@@ -198,7 +202,8 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + " has been deleted");
+                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.deleteLamp,
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
 
                                 Data.getInstance().deleteLamp(id);
                             } else {
@@ -328,7 +333,8 @@ public class Client {
                             }
                         }
                         if (changeColorSuccesfull) {
-                            Message.createToastMessage("Lamp " + Data.getInstance().getAllLamps().get(id).getNameLamp() + "'s color has been changed");
+                            Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampColor,
+                                    Data.getInstance().getAllLamps().get(id).getNameLamp()));
 
                             Data.getInstance().getAllLamps().get(id).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
                             Data.getInstance().getAllLamps().get(id).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
@@ -359,7 +365,8 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Message.createToastMessage("Lamp " + previousName + "'s name has been changed to " + name);
+                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampName, previousName,
+                                        Data.getInstance().getAllLamps().get(id).getNameLamp()));
 
                                 Data.getInstance().getAllLamps().get(id).setNameLamp(name);
                             } else {
@@ -407,7 +414,7 @@ public class Client {
                                         Color.green(color),
                                         Color.blue(color)));
                             }
-                            Message.createToastMessage("The list with lamps has been refreshed");
+                            Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps));
 
                             Data.getInstance().setAllLamps(lampList);
                         } else {

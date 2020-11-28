@@ -17,12 +17,7 @@ public class Message {
         alertDialogBuilder.setTitle("Alert");
         alertDialogBuilder.setMessage(messageText);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                createToastMessage("Loading...");
-            }
-        });
+        alertDialogBuilder.setNeutralButton("OK", (dialog, id) -> createToastMessage("Loading..."));
 
         alertDialogBuilder.create().show();
     }
@@ -30,14 +25,9 @@ public class Message {
     public static void createLinkButtonDialog(Client client){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Data.getInstance().getContext());
         alertDialogBuilder.setTitle("Alert");
-        alertDialogBuilder.setMessage("Click the link button on the Philips Hue Bridge to pair the app, make sure you do this before clicking the OK button");
+        alertDialogBuilder.setMessage(Data.getInstance().getContext().getString(R.string.linkButtonDialog));
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                client.createUsername();
-            }
-        });
+        alertDialogBuilder.setNeutralButton("OK", (dialog, id) -> client.createUsername());
 
         alertDialogBuilder.create().show();
     }
