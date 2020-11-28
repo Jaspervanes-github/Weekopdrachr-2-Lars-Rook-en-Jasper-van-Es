@@ -6,8 +6,11 @@
 
     <string name="button_del">remove</string>
     <string name="button_power">on/off</string>
+    <string name="button_back">back</string>
 
-    <string name="textViewR">R</string>
-    <string name="textViewG">G</string>
-    <string name="textViewB">B</string>
+    <string name="textViewPower">power of the lamp:</string>
+    <string name="textViewName">Enter new name:</string>
+    <string name="textViewR">R:</string>
+    <string name="textViewG">G:</string>
+    <string name="textViewB">B:</string>
 </resources>

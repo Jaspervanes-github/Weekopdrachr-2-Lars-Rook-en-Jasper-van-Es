@@ -47,7 +47,4 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
         this.allLamps.getValue().clear();
     }
 
-    public void update(){
-        setAllLamps(this.allLamps.getValue());
-    }
 }

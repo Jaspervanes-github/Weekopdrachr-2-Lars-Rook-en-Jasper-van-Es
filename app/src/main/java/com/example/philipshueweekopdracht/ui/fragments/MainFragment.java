@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment implements Adapter.OnItemClickListener, LifecycleOwner {
 
-    private Data data = Data.getInstance();
+    private Data data;
     private RecyclerView recyclerView;
     private Adapter adapter;
     private MainActivity main;
@@ -44,9 +44,10 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+        data  = Data.getInstance();
         this.context = root.getContext();
         this.mainFragment = this;
-        ViewModel viewModel = new ViewModelProvider(this).get(ViewModel.class);
+        ViewModel viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
         data.setViewModel(viewModel);
         data.getViewModel().getAllLamps().observe(mainFragment.getViewLifecycleOwner(), listOfLampsObserver);
 
@@ -87,14 +88,18 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
 
     @Override
     public void onItemClick(int clickPosition) {
-        data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));
+        //data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));
+        data.setLampSelected(data.getAllLamps().get(clickPosition));
+        data.updateViewModelSelectedLamp();
+        Fragment newFragment = new DetailFragment();
+        data.setCurrentFragment(newFragment);
+        data.getManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
         //main.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetailFragment()).commit();
     }
 
     Observer<ArrayList<Lamp>> listOfLampsObserver = new Observer<ArrayList<Lamp>>(){
         @Override
         public void onChanged(ArrayList<Lamp> lamps) {
-            System.out.println("HALLLOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             adapter = new Adapter(context, lamps, mainFragment);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
