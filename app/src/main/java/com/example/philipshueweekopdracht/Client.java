@@ -170,7 +170,7 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                //DELETELAMP
+
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.turnLampOff,
                                         Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
 
@@ -359,7 +359,7 @@ public class Client {
         }
     }
 
-    public void startFadingOfLamp(int id, int increaseHueAmount) {
+    public void startFadingOfLamp(int id, int increaseHueAmount, int delay) {
         if (this.isConnected) {
             setLampSaturation(id, 254);
             setLampBrightness(id, 125);
@@ -375,7 +375,7 @@ public class Client {
                     });
                 }
             };
-            this.fadingTimer.schedule(timerTask, 1000);
+            this.fadingTimer.schedule(timerTask, delay);
         }
     }
 
@@ -384,7 +384,7 @@ public class Client {
             this.fadingTimer.cancel();
     }
 
-    public void startDiscoOfLamp(int id) {
+    public void startDiscoOfLamp(int id, int delay) {
         if (this.isConnected) {
             setLampSaturation(id, 254);
             setLampBrightness(id, 125);
@@ -400,7 +400,7 @@ public class Client {
                     });
                 }
             };
-            this.discoTimer.schedule(timerTask, 500);
+            this.discoTimer.schedule(timerTask, delay);
         }
     }
 
@@ -476,6 +476,8 @@ public class Client {
                                         Color.blue(color)));
                             }
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
+
+                            System.out.println(lampList.toString());
 
                             Data.getInstance().setAllLamps(lampList);
                         } else {

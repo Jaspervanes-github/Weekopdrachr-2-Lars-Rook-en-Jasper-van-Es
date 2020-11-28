@@ -25,9 +25,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private Res res;
+
     @Override
     public Resources getResources() {
-        if(res == null){
+        if (res == null) {
             res = new Res(super.getResources());
         }
         return res;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
-
+                            Data.getInstance().getClient().deleteLamp(2);
                         }
                     }
                     return true;
