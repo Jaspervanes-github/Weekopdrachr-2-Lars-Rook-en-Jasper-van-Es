@@ -1,7 +1,9 @@
 package com.example.philipshueweekopdracht.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import androidx.annotation.NonNull;
 
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,30 +25,33 @@ import com.example.philipshueweekopdracht.R;
 import com.example.philipshueweekopdracht.ui.Adapter;
 import com.example.philipshueweekopdracht.ui.ViewModel;
 
-public class MainFragment extends Fragment implements Adapter.OnItemClickListener {
+import org.w3c.dom.ls.LSOutput;
+
+import java.util.ArrayList;
+
+public class MainFragment extends Fragment implements Adapter.OnItemClickListener, LifecycleOwner {
 
     private Data data = Data.getInstance();
     private RecyclerView recyclerView;
     private Adapter adapter;
     private MainActivity main;
-    private ViewModel powerViewModel;
+    private Context context;
+    private MainFragment mainFragment;
 
-    public MainFragment(MainActivity mainActivity){
-        main = mainActivity;
-    }
+   // public MainFragment(MainActivity mainActivity){
+    //    main = mainActivity;
+    //}
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        powerViewModel = new ViewModelProvider(this).get(ViewModel.class);
-        //final TextView textView = root.findViewById(R.id.text_power);
-//        powerViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//               // textView.setText(s);
-//            }
-//        });
+        this.context = root.getContext();
+        this.mainFragment = this;
+        ViewModel viewModel = new ViewModelProvider(this).get(ViewModel.class);
+        data.setViewModel(viewModel);
+        data.getViewModel().getAllLamps().observe(mainFragment.getViewLifecycleOwner(), listOfLampsObserver);
+
         if(!data.isDataSet()){
-            init();
+            //init();
             recyclerView = root.findViewById(R.id.lampListRV);
             adapter = new Adapter(root.getContext(), data.getAllLamps(), this);
             recyclerView.setAdapter(adapter);
@@ -80,9 +87,19 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
 
     @Override
     public void onItemClick(int clickPosition) {
-        Lamp selectedLamp = data.getAllLamps().get(clickPosition);
-        main.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetailFragment()).commit();
+        data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));
+        //main.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetailFragment()).commit();
     }
+
+    Observer<ArrayList<Lamp>> listOfLampsObserver = new Observer<ArrayList<Lamp>>(){
+        @Override
+        public void onChanged(ArrayList<Lamp> lamps) {
+            System.out.println("HALLLOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            adapter = new Adapter(context, lamps, mainFragment);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(adapter);
+        }
+    };
 
 
 

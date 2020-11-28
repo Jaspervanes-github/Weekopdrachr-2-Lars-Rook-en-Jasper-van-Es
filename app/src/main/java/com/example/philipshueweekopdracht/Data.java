@@ -1,5 +1,7 @@
 package com.example.philipshueweekopdracht;
 
+import com.example.philipshueweekopdracht.ui.ViewModel;
+
 import java.util.ArrayList;
 
 public class Data {
@@ -17,6 +19,7 @@ public class Data {
 
     private boolean dataSet;
     private ArrayList<Lamp> allLamps;
+    private ViewModel viewModel;
 
     public Data(){
         this.allLamps = new ArrayList<>();
@@ -37,5 +40,13 @@ public class Data {
 
     public void setAllLamps(ArrayList<Lamp> allLamps) {
         this.allLamps = allLamps;
+    }
+
+    public ViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 }

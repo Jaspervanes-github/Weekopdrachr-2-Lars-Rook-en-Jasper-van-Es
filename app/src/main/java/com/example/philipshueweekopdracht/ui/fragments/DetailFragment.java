@@ -8,27 +8,42 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.philipshueweekopdracht.Lamp;
 import com.example.philipshueweekopdracht.R;
+import com.example.philipshueweekopdracht.ui.Adapter;
 import com.example.philipshueweekopdracht.ui.ViewModel;
 
-public class DetailFragment extends Fragment {
+import java.util.ArrayList;
 
-    private ViewModel refreshViewModel;
+public class DetailFragment extends Fragment implements LifecycleOwner {
+
+    private ViewModel viewModel;
+    private View view;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        refreshViewModel =
-                new ViewModelProvider(this).get(ViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ViewModel.class);
+        viewModel.getLampSelected().observe(this.getViewLifecycleOwner(), lampObserver);
         View root = inflater.inflate(R.layout.fragment_detail, container, false);
-        final TextView textView = root.findViewById(R.id.text_refresh);
-//        refreshViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+        this.view = root;
+
+        //TODO: connect the layout components to the correct values, which they need to be displayed.
+
         return root;
     }
+
+
+    Observer<Lamp> lampObserver = new Observer<Lamp>() {
+        @Override
+        public void onChanged(Lamp lamp) {
+        //TODO: fill this up for the selected Lamp to keep the detail screen up to date.
+
+        }
+    };
+
 }

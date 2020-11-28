@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private Res res;
+    private int counter = 0;
     @Override
     public Resources getResources() {
         if(res == null){
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_viewer);
         navView.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment(this)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
 
     }
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.navigation_power: {
                             //switch all lamps on/off
+                            Lamp lamp = new Lamp(counter + "", "lamp" + counter, true, 255, 0, 0);
+                            Data.getInstance().getViewModel().addLamp(lamp);
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
