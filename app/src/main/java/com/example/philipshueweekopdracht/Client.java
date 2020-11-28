@@ -1,8 +1,7 @@
 package com.example.philipshueweekopdracht;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +13,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,20 +33,30 @@ public class Client {
     private int port;
     private boolean isConnected;
 
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
+
+    private final Handler handler;
+    private Random random;
+    private Timer fadingTimer;
+    private Timer discoTimer;
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public Client() {
         this.client = new OkHttpClient();
         this.port = 8000;
         this.isConnected = false;
+
+        this.handler = new Handler();
+        this.random = new Random();
+        this.fadingTimer = new Timer(false);
+        this.discoTimer = new Timer(false);
     }
 
     private void Connect() {
         this.ipAddress = getBridgeIpAddress();
         Message.createLinkButtonDialog(this);
-        createUsername();
         this.isConnected = true;
+        getAllLamps();
     }
 
     private String getBridgeIpAddress() {
@@ -348,6 +360,56 @@ public class Client {
         }
     }
 
+    public void startFadingOfLamp(int id, int increaseHueAmount) {
+        if (this.isConnected) {
+            setLampSaturation(id, 254);
+            setLampBrightness(id, 125);
+
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            setLampHue(id, Data.getInstance().getAllLamps().get(id).getHueValue() + increaseHueAmount);
+                        }
+                    });
+                }
+            };
+            this.fadingTimer.schedule(timerTask, 1000);
+        }
+    }
+
+    public void stopFadingOfLamp(int id) {
+        if (this.isConnected)
+            this.fadingTimer.cancel();
+    }
+
+    public void startDiscoOfLamp(int id) {
+        if (this.isConnected) {
+            setLampSaturation(id, 254);
+            setLampBrightness(id, 125);
+
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            setLampHue(id, random.nextInt(65535));
+                        }
+                    });
+                }
+            };
+            this.discoTimer.schedule(timerTask, 500);
+        }
+    }
+
+    public void stopDiscoOfLamp() {
+        if (this.isConnected)
+            this.discoTimer.cancel();
+    }
+
     public void setLampName(int id, String name) {
         String previousName = Data.getInstance().getAllLamps().get(id).getNameLamp();
         if (this.isConnected)
@@ -380,6 +442,7 @@ public class Client {
                 }
             });
     }
+
 
     public void getAllLamps() {
         if (this.isConnected)

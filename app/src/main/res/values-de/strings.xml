@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Philips HUE Weekopdracht</string>
-    <string name="title_activity_botom_navigationview">" Hauptaktivität"</string>
+    <string name="title_activity_botom_navigationview">Hauptaktivität</string>
     <string name="title_power">Strom</string>
     <string name="title_refresh">Aktualisierung</string>
     <string name="button_del">löschen</string>
-    <string name="button_power">" an/aus"</string>
+    <string name="button_power">an/aus</string>
     <string name="turnLampOn">Lampe %1$s wurde eingeschaltet</string>
-    <string name="turnLampOff">" Lampe %1$s wurde ausgeschaltet"</string>
-    <string name="deleteLamp">" Lampe %1$s wurde gelöscht"</string>
-    <string name="setLampColor">" Die Farbe der Lampe %1$s wurde geändert"</string>
-    <string name="setLampName">" Der Name der Lampe %1$ wurde in %2$s geändert"</string>
-    <string name="getAllLamps">" Die Liste mit Lampen wurde aktualisiert"</string>
+    <string name="turnLampOff">Lampe %1$s wurde ausgeschaltet</string>
+    <string name="deleteLamp">Lampe %1$s wurde gelöscht</string>
+    <string name="setLampColor">Die Farbe der Lampe %1$s wurde geändert</string>
+    <string name="setLampName">Der Name der Lampe %1$ wurde in %2$s geändert</string>
+    <string name="getAllLamps">Die Liste mit Lampen wurde aktualisiert</string>
     <string name="linkButtonDialog">"Klicken Sie auf der Philips Hue Bridge auf die Link-Schaltfläche, um die App zu koppeln. Stellen Sie sicher, dass Sie dies tun, bevor Sie auf die Schaltfläche OK klicken "</string>
 </resources>
