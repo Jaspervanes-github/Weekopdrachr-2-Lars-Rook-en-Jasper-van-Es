@@ -124,7 +124,7 @@ public class Client {
 
     public void turnLampOn(int id) {
         if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + (id+1) + "/state", "{\"on\":true}")).enqueue(new Callback() {
+            client.newCall(createPutRequest("/lights/" + (id + 1) + "/state", "{\"on\":true}")).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.d("FAILURE", "In OnFailure() in turnLampOn()");
@@ -164,7 +164,7 @@ public class Client {
 
     public void turnLampOff(int id) {
         if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + (id+1) + "/state", "{\"on\":false}")).enqueue(new Callback() {
+            client.newCall(createPutRequest("/lights/" + (id + 1) + "/state", "{\"on\":false}")).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.d("FAILURE", "In OnFailure() in turnLampOff()");
@@ -361,8 +361,7 @@ public class Client {
 
     public void setLampColor(int id, int r, int g, int b) {
         if (this.isConnected) {
-            float[] hsb = new float[3];
-            Color.RGBToHSV(r, g, b, hsb);
+            float[] hsb = calculateHSBColor(r, g, b);
 
             client.newCall(createPutRequest("/lights/" + id + "/state", "{\n" +
                     "    \"hue\":" + hsb[0] + ",\n" +
@@ -407,6 +406,18 @@ public class Client {
                 }
             });
         }
+    }
+
+    private float[] calculateHSBColor(int red, int green, int blue) {
+        float[] hsb = new float[3];
+        Color.RGBToHSV(red, green, blue, hsb);
+
+        System.out.println((hsb[0] / 360) * 65535 + "   " + hsb[1] * 255 + "  " + hsb[2] * 255);
+        hsb[0] = (Math.round((hsb[0] / 360) * 65535));
+        hsb[1] = (Math.round(hsb[1] * 255));
+        hsb[2] = (Math.round(hsb[2] * 255));
+
+        return hsb;
     }
 
     public void startFadingOfLamp(int id, int increaseHueAmount, int delay) {
@@ -460,7 +471,7 @@ public class Client {
     }
 
     public void setLampName(int id, String name) {
-        String previousName = Data.getInstance().getAllLamps().get(id).getNameLamp();
+        String previousName = Data.getInstance().getAllLamps().get(id - 1).getNameLamp();
         if (this.isConnected)
             client.newCall(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}")).enqueue(new Callback() {
                 @Override
@@ -477,9 +488,10 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampName, previousName,
-                                        Data.getInstance().getAllLamps().get(id).getNameLamp()), Toast.LENGTH_SHORT);
+                                        Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
-                                Data.getInstance().getAllLamps().get(id).setNameLamp(name);
+                                Data.getInstance().getAllLamps().get(id - 1).setNameLamp(name);
+                                System.out.println(name);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampName()");
