@@ -91,6 +91,7 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
         //data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));
         data.setLampSelected(data.getAllLamps().get(clickPosition));
         data.updateViewModelSelectedLamp();
+        System.out.println(data.getLampSelected().getNameLamp()+ "   " + data.getLampSelected().getColorValueRed() + "   " + data.getLampSelected().getColorValueGreen() + "   " + data.getLampSelected().getColorValueBlue());
         Fragment newFragment = new DetailFragment();
         data.setCurrentFragment(newFragment);
         data.getManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();

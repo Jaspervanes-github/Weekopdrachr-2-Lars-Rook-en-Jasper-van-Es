@@ -126,9 +126,10 @@ public class Lamp {
         float[] hsb = new float[3];
         Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
 
-        setHueValue((int)hsb[0]);
-        setSatValue((int)hsb[1]);
-        setBriValue((int)hsb[2]);
+        System.out.println((hsb[0]/360)* 65535 +  "   " + hsb[1]*255 + "  " + hsb[2]*255);
+        setHueValue(Math.round((hsb[0]/360)* 65535));
+        setSatValue(Math.round(hsb[1]*255));
+        setBriValue(Math.round(hsb[2]*255));
     }
 
     public int getFadingSpeed() {

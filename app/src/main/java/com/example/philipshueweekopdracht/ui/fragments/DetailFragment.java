@@ -46,8 +46,6 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
         viewModel.getLampSelected().observe(this.getViewLifecycleOwner(), lampObserver);
 
         //TODO: connect the layout components to the correct values, which they need to be displayed.
-
-        setAllComponents();
         SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
         seekBarR.setProgress(data.getLampSelected().getColorValueRed());
 
@@ -99,6 +97,8 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
             seekBarDisco.setEnabled(false);
         }
 
+        setAllComponents();
+        
         return root;
     }
 
