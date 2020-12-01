@@ -136,6 +136,8 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 } else {
                     powerButton.setBackgroundColor(Color.RED);
                     data.getClient().turnLampOff(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
+//                    data.getClient().stopDiscoOfLamp();
+//                    data.getClient().stopFadingOfLamp();
                 }
             }
         });

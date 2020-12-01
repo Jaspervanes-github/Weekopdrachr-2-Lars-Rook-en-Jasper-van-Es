@@ -267,7 +267,7 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Data.getInstance().getAllLamps().get(id).setHueValue(hue);
+                                Data.getInstance().getAllLamps().get(id - 1).setHueValue(hue);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampHue()");
@@ -303,7 +303,7 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Data.getInstance().getAllLamps().get(id).setSatValue(saturation);
+                                Data.getInstance().getAllLamps().get(id - 1).setSatValue(saturation);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampSaturation()");
@@ -339,7 +339,7 @@ public class Client {
                         for (int i = 0; i < responseArray.length(); i++) {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
-                                Data.getInstance().getAllLamps().get(id).setBriValue(brightness);
+                                Data.getInstance().getAllLamps().get(id - 1).setBriValue(brightness);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampBrightness()");
@@ -387,11 +387,11 @@ public class Client {
                         }
                         if (changeColorSuccesfull) {
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampColor,
-                                    Data.getInstance().getAllLamps().get(id-1).getNameLamp()), Toast.LENGTH_SHORT);
+                                    Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
-                            Data.getInstance().getAllLamps().get(id-1).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
-                            Data.getInstance().getAllLamps().get(id-1).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
-                            Data.getInstance().getAllLamps().get(id-1).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
+                            Data.getInstance().getAllLamps().get(id - 1).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
+                            Data.getInstance().getAllLamps().get(id - 1).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
+                            Data.getInstance().getAllLamps().get(id - 1).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
                         }
 
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -431,13 +431,16 @@ public class Client {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            int hue = Data.getInstance().getAllLamps().get(id).getHueValue() + increaseHueAmount;
-                            if(hue >= 65535){
-                             hue = hue - 65535;
+                            int hue = Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount;
+                            if (hue >= 65535) {
+                                hue = hue - 65535;
                             }
-                                setLampHue(id, hue);
-                            if (lampSelected.isFadingMode())
+                            setLampHue(id, hue);
+                            if (lampSelected.isFadingMode() && lampSelected.isPower()) {
                                 fadingTimer.schedule(createFadingTimerTask(id, increaseHueAmount, lampSelected), lampSelected.getFadingSpeed());
+                            } else {
+                                stopFadingOfLamp();
+                            }
                         }
                     });
                 }
@@ -451,21 +454,25 @@ public class Client {
             @Override
             public void run() {
                 int hue = Data.getInstance().getAllLamps().get(id).getHueValue() + increaseHueAmount;
-                if(hue >= 65535){
+                if (hue >= 65535) {
                     hue = hue - 65535;
                 }
-                setLampHue(id, Data.getInstance().getAllLamps().get(id).getHueValue() + increaseHueAmount);
-                if (lampSelected.isFadingMode())
+                setLampHue(id, Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount);
+                if (lampSelected.isFadingMode() && lampSelected.isPower()) {
                     fadingTimer.schedule(createFadingTimerTask(id, increaseHueAmount, lampSelected), lampSelected.getFadingSpeed());
+                } else {
+                    stopFadingOfLamp();
+                }
             }
         };
         return timerTask;
     }
 
     public void stopFadingOfLamp() {
-        if (this.isConnected)
+        if (this.isConnected && Data.getInstance().getLampSelected().isFadingMode()) {
             this.fadingTimer.purge();
-        this.fadingTimer.cancel();
+            this.fadingTimer.cancel();
+        }
     }
 
     public void startDiscoOfLamp(int id, Lamp lampSelected) {
@@ -480,8 +487,11 @@ public class Client {
                         @Override
                         public void run() {
                             setLampHue(id, random.nextInt(65535));
-                            if (lampSelected.isDiscoMode())
+                            if (lampSelected.isDiscoMode() && lampSelected.isPower()) {
                                 fadingTimer.schedule(createDiscoTimerTask(id, lampSelected), lampSelected.getDiscoSpeed());
+                            } else {
+                                stopDiscoOfLamp();
+                            }
                         }
                     });
                 }
@@ -495,16 +505,21 @@ public class Client {
             @Override
             public void run() {
                 setLampHue(id, random.nextInt(65535));
-                if (lampSelected.isDiscoMode())
+                if (lampSelected.isDiscoMode() && lampSelected.isPower()) {
                     fadingTimer.schedule(createDiscoTimerTask(id, lampSelected), lampSelected.getDiscoSpeed());
+                } else {
+                    stopDiscoOfLamp();
+                }
             }
         };
         return timerTask;
     }
 
     public void stopDiscoOfLamp() {
-        if (this.isConnected)
+        if (this.isConnected && Data.getInstance().getLampSelected().isDiscoMode()) {
+            this.discoTimer.purge();
             this.discoTimer.cancel();
+        }
     }
 
     public void setLampName(int id, String name) {
