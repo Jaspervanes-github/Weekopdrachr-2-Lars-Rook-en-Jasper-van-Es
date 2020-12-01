@@ -8,6 +8,10 @@
     <string name="button_power">on/off</string>
     <string name="button_back">back</string>
 
+
+    <string name="textViewFading">Fading speed</string>
+    <string name="textViewDisco">Disco speed</string>
+
     <string name="textViewPower">power of the lamp:</string>
     <string name="textViewName">Enter new name:</string>
     <string name="textViewR">R:</string>

@@ -9,6 +9,12 @@ public class Lamp {
     private int colorValueGreen;
     private int colorValueBlue;
 
+    private int fadingSpeed;
+    private int discoSpeed;
+
+    private boolean fadingMode;
+    private boolean discoMode;
+
     public Lamp(String lampID, String name, boolean OnOrOff,int r, int g, int b){
         this.lampID = lampID;
         this.nameLamp = name;
@@ -16,6 +22,11 @@ public class Lamp {
         this.colorValueRed = r;
         this.colorValueGreen = g;
         this.colorValueBlue = b;
+
+        this.fadingSpeed = 500;
+        this.discoSpeed = 500;
+        this.fadingMode = false;
+        this.discoMode = false;
     }
 
     public String getLampID() {
@@ -64,5 +75,37 @@ public class Lamp {
 
     public void setColorValueBlue(int colorValueBlue) {
         this.colorValueBlue = colorValueBlue;
+    }
+
+    public int getFadingSpeed() {
+        return fadingSpeed;
+    }
+
+    public void setFadingSpeed(int fadingSpeed) {
+        this.fadingSpeed = fadingSpeed;
+    }
+
+    public int getDiscoSpeed() {
+        return discoSpeed;
+    }
+
+    public void setDiscoSpeed(int discoSpeed) {
+        this.discoSpeed = discoSpeed;
+    }
+
+    public boolean isFadingMode() {
+        return fadingMode;
+    }
+
+    public void setFadingMode(boolean fadingMode) {
+        this.fadingMode = fadingMode;
+    }
+
+    public boolean isDiscoMode() {
+        return discoMode;
+    }
+
+    public void setDiscoMode(boolean discoMode) {
+        this.discoMode = discoMode;
     }
 }

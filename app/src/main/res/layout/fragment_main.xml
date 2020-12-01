@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CF1818"
+    android:background="#A6A4A6"
     tools:context=".ui.fragments.MainFragment"
     android:id="@+id/main_Fragment">
 

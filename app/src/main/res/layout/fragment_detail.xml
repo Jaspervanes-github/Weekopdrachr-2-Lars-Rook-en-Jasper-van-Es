@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#28AAE4"
+    android:background="#A6A4A6"
     tools:context=".ui.fragments.DetailFragment">
 
 
@@ -114,10 +114,10 @@
         android:max="255"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toEndOf="@+id/detailTextViewG"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.423" />
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarR"
+        app:layout_constraintVertical_bias="0.08" />
 
     <TextView
         android:id="@+id/detailTextViewGValue"
@@ -150,10 +150,10 @@
         android:max="255"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toEndOf="@+id/detailTextViewB"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarG"
+        app:layout_constraintVertical_bias="0.089" />
 
     <TextView
         android:id="@+id/detailTextViewBValue"
@@ -179,18 +179,17 @@
         app:layout_constraintVertical_bias="0.404" />
 
 
-
-
     <TextView
         android:id="@+id/detailTextViewFading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/textViewFading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintHorizontal_bias="0.039"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintTop_toBottomOf="@+id/detailTextViewB"
+        app:layout_constraintVertical_bias="0.106" />
 
     <SeekBar
         android:id="@+id/detailSeekBarFading"
@@ -198,11 +197,22 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.383"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.615" />
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toEndOf="@+id/detailTextViewFading"
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarB"
+        app:layout_constraintVertical_bias="0.103"
+        android:max="2500"/>
 
+    <TextView
+        android:id="@+id/detailTextViewFadingValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.245"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarFading"
+        app:layout_constraintVertical_bias="0.024" />
 
     <Button
         android:id="@+id/detailButtonOnOffFading"
@@ -211,20 +221,22 @@
         android:text="@string/button_power"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toEndOf="@+id/detailSeekBarFading"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
+        app:layout_constraintVertical_bias="0.651" />
 
     <TextView
         android:id="@+id/detailTextViewDisco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/textViewDisco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.682" />
+        app:layout_constraintTop_toBottomOf="@+id/detailTextViewFading"
+        app:layout_constraintVertical_bias="0.246" />
 
     <SeekBar
         android:id="@+id/detailSeekBarDisco"
@@ -232,11 +244,22 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.383"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.681" />
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toEndOf="@+id/detailTextViewDisco"
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarFading"
+        app:layout_constraintVertical_bias="0.253"
+        android:max="2500"/>
 
+    <TextView
+        android:id="@+id/detailTextViewDiscoValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.245"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailSeekBarDisco"
+        app:layout_constraintVertical_bias="0.061" />
 
     <Button
         android:id="@+id/detailButtonOnOffDisco"
@@ -245,9 +268,10 @@
         android:text="@string/button_power"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.322"
         app:layout_constraintStart_toEndOf="@+id/detailSeekBarDisco"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.688" />
+        app:layout_constraintVertical_bias="0.787" />
 
     <TextView
         android:id="@+id/detailTextViewName"
