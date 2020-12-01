@@ -239,7 +239,6 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -258,7 +257,6 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
@@ -274,6 +272,7 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 if (data.getLampSelected().isFadingMode()) {
                     fadingOnOff.setBackgroundColor(Color.GREEN);
                     data.getLampSelected().setDiscoMode(false);
+                    data.getClient().startFadingOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), 900, data.getLampSelected());
 
                     seekBarFading.setEnabled(true);
                     seekBarDisco.setEnabled(false);
@@ -284,6 +283,8 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 } else {
                     fadingOnOff.setBackgroundColor(Color.RED);
                     seekBarFading.setEnabled(false);
+                    data.getClient().stopFadingOfLamp();
+
                     if (!(data.getLampSelected().isDiscoMode() && data.getLampSelected().isFadingMode())) {
                         seekBarR.setEnabled(true);
                         seekBarG.setEnabled(true);
@@ -301,6 +302,7 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 if (data.getLampSelected().isDiscoMode()) {
                     discoOnOff.setBackgroundColor(Color.GREEN);
                     data.getLampSelected().setFadingMode(false);
+                    data.getClient().startDiscoOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), data.getLampSelected());
 
                     seekBarDisco.setEnabled(true);
                     seekBarFading.setEnabled(false);
@@ -311,6 +313,7 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 } else {
                     discoOnOff.setBackgroundColor(Color.RED);
                     seekBarDisco.setEnabled(false);
+                    data.getClient().stopDiscoOfLamp();
                     if (!(data.getLampSelected().isDiscoMode() && data.getLampSelected().isFadingMode())) {
                         seekBarR.setEnabled(true);
                         seekBarG.setEnabled(true);
