@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MenuItem;
 
 import com.example.philipshueweekopdracht.ui.ViewModel;
@@ -19,8 +20,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_relative);
+        Data.getInstance().setContext(this);
         BottomNavigationView navView = findViewById(R.id.nav_viewer);
         navView.setOnNavigationItemSelectedListener(navListener);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
 
         data = Data.getInstance();
 
@@ -28,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         data.setViewModel(viewModel);
         data.setManager(getSupportFragmentManager());
         data.getManager().beginTransaction().replace(R.id.fragment_container, data.getCurrentFragment()).commit();
+
+        data.getClient().Connect();
+        data.getClient().getAllLamps();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -37,17 +46,15 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.navigation_power: {
                             //switch all lamps on/off
-                            Lamp lamp = new Lamp(counter + "", "lamp" + counter, true, 0, 0, 0);
-                            data.getAllLamps().add(lamp);
-                            data.updateViewModelLampList();
-                            counter++;
+                            data.getClient().setPowerOfAllLamps(data.isAllPowerOn());
+                            data.setAllPowerOn(!data.isAllPowerOn());
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
+                            data.getClient().getAllLamps();
                         }
                     }
                     return true;
                 }
             };
-
 }

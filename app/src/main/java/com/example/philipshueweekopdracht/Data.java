@@ -1,5 +1,7 @@
 package com.example.philipshueweekopdracht;
 
+import android.content.Context;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -23,16 +25,21 @@ public class Data {
 
     private boolean dataSet;
     private ArrayList<Lamp> allLamps;
+    private Client client;
+    private Context context;
     private Lamp lampSelected;
     private ViewModel viewModel;
     private FragmentManager manager;
     private Fragment currentFragment;
+    private boolean allPowerOn;
 
     public Data(){
+        this.client = new Client();
         this.allLamps = new ArrayList<>();
         this.lampSelected = null;
         this.dataSet = false;
         currentFragment = new MainFragment();
+        this.allPowerOn = false;
     }
 
     public boolean isDataSet() {
@@ -49,6 +56,30 @@ public class Data {
 
     public void setAllLamps(ArrayList<Lamp> allLamps) {
         this.allLamps = allLamps;
+    }
+
+    public void AddLamp(Lamp lamp){
+        this.allLamps.add(lamp);
+    }
+
+    public void deleteLamp(int id){
+        this.allLamps.remove(id);
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public ViewModel getViewModel() {
@@ -88,5 +119,13 @@ public class Data {
 
     public void setCurrentFragment(Fragment currentFragment) {
         this.currentFragment = currentFragment;
+    }
+
+    public boolean isAllPowerOn() {
+        return allPowerOn;
+    }
+
+    public void setAllPowerOn(boolean allPowerOn) {
+        this.allPowerOn = allPowerOn;
     }
 }

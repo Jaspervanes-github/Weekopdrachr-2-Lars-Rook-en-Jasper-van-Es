@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Philips HUE Weekopdracht</string>
+    <string name="title_activity_botom_navigationview">HoofdActiviteit</string>
+    <string name="title_refresh">Verversen</string>
+    <string name="button_del">verwijderen</string>
+    <string name="button_power">aan/uit</string>
+    <string name="turnLampOn">Lamp %1$s is uitgezet</string>
+    <string name="turnLampOff">Lamp %1$s is aangezet</string>
+    <string name="deleteLamp">Lamp %1$s is verwijderd</string>
+    <string name="setLampColor">Lamp %1$s zijn kleur is aangepast</string>
+    <string name="setLampName">Lamp %1$s zijn naam is veranderd naar %2$s</string>
+    <string name="getAllLamps">De lijst met lampen is ververst</string>
+    <string name="linkButtonDialog">Klik op de link knop op de Philips Hue Bridge om de app te koppelen, zorg ervoor dat je dit doet voordat je op de OK knop drukt</string>
+    <string name="title_power">Status</string>
+</resources>
