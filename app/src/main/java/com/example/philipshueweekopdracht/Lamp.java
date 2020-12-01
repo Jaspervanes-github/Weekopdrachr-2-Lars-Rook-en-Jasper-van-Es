@@ -15,6 +15,13 @@ public class Lamp {
     private int briValue;
 
     public Lamp(String lampID, String name, boolean OnOrOff, int r, int g, int b) {
+    private int fadingSpeed;
+    private int discoSpeed;
+
+    private boolean fadingMode;
+    private boolean discoMode;
+
+    public Lamp(String lampID, String name, boolean OnOrOff,int r, int g, int b){
         this.lampID = lampID;
         this.nameLamp = name;
         this.power = OnOrOff;
@@ -23,6 +30,11 @@ public class Lamp {
         this.colorValueBlue = b;
 
         calculateHSBColor();
+
+        this.fadingSpeed = 500;
+        this.discoSpeed = 500;
+        this.fadingMode = false;
+        this.discoMode = false;
     }
 
     public int getHueValue() {
@@ -117,5 +129,37 @@ public class Lamp {
         setHueValue((int)hsb[0]);
         setSatValue((int)hsb[1]);
         setBriValue((int)hsb[2]);
+    }
+
+    public int getFadingSpeed() {
+        return fadingSpeed;
+    }
+
+    public void setFadingSpeed(int fadingSpeed) {
+        this.fadingSpeed = fadingSpeed;
+    }
+
+    public int getDiscoSpeed() {
+        return discoSpeed;
+    }
+
+    public void setDiscoSpeed(int discoSpeed) {
+        this.discoSpeed = discoSpeed;
+    }
+
+    public boolean isFadingMode() {
+        return fadingMode;
+    }
+
+    public void setFadingMode(boolean fadingMode) {
+        this.fadingMode = fadingMode;
+    }
+
+    public boolean isDiscoMode() {
+        return discoMode;
+    }
+
+    public void setDiscoMode(boolean discoMode) {
+        this.discoMode = discoMode;
     }
 }

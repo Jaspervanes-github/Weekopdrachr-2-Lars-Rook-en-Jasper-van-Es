@@ -1,6 +1,7 @@
 package com.example.philipshueweekopdracht.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.philipshueweekopdracht.Data;
@@ -31,7 +33,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     @NonNull
     @Override
     public LampViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.lamp_list_item, parent, false);
         LampViewHolder holder = new LampViewHolder(itemView);
         return holder;
     }
@@ -40,16 +42,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     public void onBindViewHolder(@NonNull LampViewHolder holder, int position) {
         Lamp selectedLamp = allLamps.get(position);
         holder.title.setText(selectedLamp.getNameLamp() + "\n" + selectedLamp.getLampID());
+        holder.layout.getBackground().setTint(getIntFromColor(selectedLamp.getColorValueRed(), selectedLamp.getColorValueGreen(), selectedLamp.getColorValueBlue()));
+
+        if(selectedLamp.isPower()){
+            holder.onOrOffButton.setBackgroundColor(Color.GREEN);
+        } else{
+            holder.onOrOffButton.setBackgroundColor(Color.RED);
+        }
 
         holder.onOrOffButton.setOnClickListener((view) -> {
-            Lamp lamp = allLamps.get(position);
             //TODO: check if the request succeded!
-            lamp.setPower(!lamp.isPower());
-            if(lamp.isPower()){
-                holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_ON));
+            selectedLamp.setPower(!selectedLamp.isPower());
+            if(selectedLamp.isPower()){
+               // holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_ON));
+                holder.onOrOffButton.getBackground().setTint(Color.GREEN);
             }
             else{
-                holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_OFF));
+                //holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_OFF));
+                holder.onOrOffButton.getBackground().setTint(Color.RED);
             }
         });
     }
@@ -71,14 +81,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
 
         public TextView title;
         private Button onOrOffButton;
-        private Button deleteButton;
+        private View layout;
 
 
         public LampViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.textViewItem);
             onOrOffButton = itemView.findViewById(R.id.buttonOnOrOff);
-            deleteButton = itemView.findViewById(R.id.buttonDelete);
+            layout = itemView.findViewById(R.id.list_item_layout);
             itemView.setOnClickListener(this);
         }
 
@@ -87,6 +97,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
             int clickPosition = getAdapterPosition();
             clickListener.onItemClick(clickPosition);
         }
+    }
+
+
+    private int getIntFromColor(int Red, int Green, int Blue){
+        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
+        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
+        Blue = Blue & 0x000000FF; //Mask out anything not blue.
+
+        return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
     }
 
 

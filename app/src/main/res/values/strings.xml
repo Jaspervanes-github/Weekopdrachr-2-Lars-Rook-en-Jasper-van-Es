@@ -4,7 +4,7 @@
     <string name="title_power">Power</string>
     <string name="title_refresh">Refresh</string>
 
-    <string name="button_del">delete</string>
+    <string name="button_del">remove</string>
     <string name="button_power">on/off</string>
 
     <string name="turnLampOn">Lamp %1$s has been turned on</string>
@@ -16,4 +16,15 @@
     <string name="linkButtonDialog">Click the link button on the Philips Hue Bridge to pair the app, make sure you do this before clicking the OK button</string>
 
 
+    <string name="button_back">back</string>
+
+
+    <string name="textViewFading">Fading speed</string>
+    <string name="textViewDisco">Disco speed</string>
+
+    <string name="textViewPower">power of the lamp:</string>
+    <string name="textViewName">Enter new name:</string>
+    <string name="textViewR">R:</string>
+    <string name="textViewG">G:</string>
+    <string name="textViewB">B:</string>
 </resources>

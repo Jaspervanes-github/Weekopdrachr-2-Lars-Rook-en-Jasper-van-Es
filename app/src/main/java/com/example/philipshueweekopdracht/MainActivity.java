@@ -2,37 +2,20 @@ package com.example.philipshueweekopdracht;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.philipshueweekopdracht.ui.Adapter;
-import com.example.philipshueweekopdracht.ui.Res;
-import com.example.philipshueweekopdracht.ui.power.PowerFragment;
+import com.example.philipshueweekopdracht.ui.ViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Res res;
-
-    @Override
-    public Resources getResources() {
-        if (res == null) {
-            res = new Res(super.getResources());
-        }
-        return res;
-    }
+    private Data data;
+    private int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PowerFragment()).commit();
+        data = Data.getInstance();
+
+        ViewModel viewModel = new ViewModelProvider(this).get(ViewModel.class);
+        data.setViewModel(viewModel);
+        data.setManager(getSupportFragmentManager());
+        data.getManager().beginTransaction().replace(R.id.fragment_container, data.getCurrentFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -55,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.navigation_power: {
                             //switch all lamps on/off
-
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
