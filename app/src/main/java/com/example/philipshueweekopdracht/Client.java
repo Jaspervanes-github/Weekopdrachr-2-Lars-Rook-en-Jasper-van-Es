@@ -2,6 +2,7 @@ package com.example.philipshueweekopdracht;
 
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -123,7 +124,7 @@ public class Client {
 
     public void turnLampOn(int id) {
         if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"on\":true}")).enqueue(new Callback() {
+            client.newCall(createPutRequest("/lights/" + (id+1) + "/state", "{\"on\":true}")).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.d("FAILURE", "In OnFailure() in turnLampOn()");
@@ -147,6 +148,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response turnLampOn()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -156,7 +164,7 @@ public class Client {
 
     public void turnLampOff(int id) {
         if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"on\":false}")).enqueue(new Callback() {
+            client.newCall(createPutRequest("/lights/" + (id+1) + "/state", "{\"on\":false}")).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.d("FAILURE", "In OnFailure() in turnLampOff()");
@@ -180,6 +188,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response turnLampOff()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -222,6 +237,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response deleteLamp()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -231,7 +253,7 @@ public class Client {
 
     public void setLampHue(int id, int hue) {
         if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"bri\":" + hue + "}")).enqueue(new Callback() {
+            client.newCall(createPutRequest("/lights/" + id + "/state", "{\"hue\":" + hue + "}")).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.d("FAILURE", "In OnFailure() in setLampHue()");
@@ -251,6 +273,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response setLampHue()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -280,6 +309,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response setLampSaturation()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -309,6 +345,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response setLampBrightness()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -351,6 +394,13 @@ public class Client {
                             Data.getInstance().getAllLamps().get(id).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
                             Data.getInstance().getAllLamps().get(id).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -435,6 +485,13 @@ public class Client {
                                 Log.d("ERROR", "Error in response setLampName()");
                             }
                         }
+
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Data.getInstance().updateViewModelLampList();
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -477,9 +534,15 @@ public class Client {
                             }
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
 
-                            System.out.println(lampList.toString());
-
                             Data.getInstance().setAllLamps(lampList);
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Data.getInstance().updateViewModelLampList();
+                                }
+                            });
+
                         } else {
                             //ERROR
                             Log.d("ERROR", "Error in response getAllLamps()");

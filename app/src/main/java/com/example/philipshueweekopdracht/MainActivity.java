@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.MenuItem;
 
 import com.example.philipshueweekopdracht.ui.ViewModel;
@@ -28,13 +27,16 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PowerFragment()).commit();
+
         data = Data.getInstance();
 
         ViewModel viewModel = new ViewModelProvider(this).get(ViewModel.class);
         data.setViewModel(viewModel);
         data.setManager(getSupportFragmentManager());
         data.getManager().beginTransaction().replace(R.id.fragment_container, data.getCurrentFragment()).commit();
+
+        data.getClient().Connect();
+        data.getClient().getAllLamps();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -44,10 +46,12 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.navigation_power: {
                             //switch all lamps on/off
+                            data.getClient().setPowerOfAllLamps(data.isAllPowerOn());
+                            data.setAllPowerOn(!data.isAllPowerOn());
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps
-                            Data.getInstance().getClient().deleteLamp(2);
+                            data.getClient().getAllLamps();
                         }
                     }
                     return true;

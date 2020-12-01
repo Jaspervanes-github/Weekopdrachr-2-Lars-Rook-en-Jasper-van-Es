@@ -55,11 +55,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
             selectedLamp.setPower(!selectedLamp.isPower());
             if(selectedLamp.isPower()){
                // holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_ON));
-                holder.onOrOffButton.getBackground().setTint(Color.GREEN);
+                holder.onOrOffButton.setBackgroundColor(Color.GREEN);
+                Data.getInstance().getClient().turnLampOn(position);
             }
             else{
                 //holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_OFF));
-                holder.onOrOffButton.getBackground().setTint(Color.RED);
+                holder.onOrOffButton.setBackgroundColor(Color.RED);
+                Data.getInstance().getClient().turnLampOff(position);
             }
         });
     }

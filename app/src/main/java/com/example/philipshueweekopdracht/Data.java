@@ -31,6 +31,7 @@ public class Data {
     private ViewModel viewModel;
     private FragmentManager manager;
     private Fragment currentFragment;
+    private boolean allPowerOn;
 
     public Data(){
         this.client = new Client();
@@ -38,6 +39,7 @@ public class Data {
         this.lampSelected = null;
         this.dataSet = false;
         currentFragment = new MainFragment();
+        this.allPowerOn = false;
     }
 
     public boolean isDataSet() {
@@ -117,5 +119,13 @@ public class Data {
 
     public void setCurrentFragment(Fragment currentFragment) {
         this.currentFragment = currentFragment;
+    }
+
+    public boolean isAllPowerOn() {
+        return allPowerOn;
+    }
+
+    public void setAllPowerOn(boolean allPowerOn) {
+        this.allPowerOn = allPowerOn;
     }
 }

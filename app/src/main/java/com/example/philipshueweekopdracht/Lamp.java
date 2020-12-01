@@ -14,7 +14,7 @@ public class Lamp {
     private int satValue;
     private int briValue;
 
-    public Lamp(String lampID, String name, boolean OnOrOff, int r, int g, int b) {
+
     private int fadingSpeed;
     private int discoSpeed;
 
