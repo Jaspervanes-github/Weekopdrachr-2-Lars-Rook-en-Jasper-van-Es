@@ -278,6 +278,7 @@ public class Client {
                             @Override
                             public void run() {
                                 Data.getInstance().updateViewModelLampList();
+                                Data.getInstance().updateViewModelSelectedLamp();
                             }
                         });
                     } catch (JSONException e) {
@@ -314,6 +315,7 @@ public class Client {
                             @Override
                             public void run() {
                                 Data.getInstance().updateViewModelLampList();
+                                Data.getInstance().updateViewModelSelectedLamp();
                             }
                         });
                     } catch (JSONException e) {
@@ -350,6 +352,7 @@ public class Client {
                             @Override
                             public void run() {
                                 Data.getInstance().updateViewModelLampList();
+                                Data.getInstance().updateViewModelSelectedLamp();
                             }
                         });
                     } catch (JSONException e) {
@@ -453,11 +456,11 @@ public class Client {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                int hue = Data.getInstance().getAllLamps().get(id).getHueValue() + increaseHueAmount;
+                int hue = Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount;
                 if (hue >= 65535) {
                     hue = hue - 65535;
                 }
-                setLampHue(id, Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount);
+                setLampHue(id, hue);
                 if (lampSelected.isFadingMode() && lampSelected.isPower()) {
                     fadingTimer.schedule(createFadingTimerTask(id, increaseHueAmount, lampSelected), lampSelected.getFadingSpeed());
                 } else {
