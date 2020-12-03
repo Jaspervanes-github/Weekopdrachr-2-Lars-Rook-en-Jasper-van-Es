@@ -133,11 +133,31 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 if (data.getLampSelected().isPower()) {
                     powerButton.setBackgroundColor(Color.GREEN);
                     data.getClient().turnLampOn(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
+
+                    SeekBar seekBarFading = view.findViewById(R.id.detailSeekBarFading);
+                    seekBarFading.setEnabled(false);
+                    SeekBar seekBarDisco = view.findViewById(R.id.detailSeekBarDisco);
+                    seekBarDisco.setEnabled(false);
+                    SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
+                    seekBarR.setEnabled(false);
+                    SeekBar seekBarG = view.findViewById(R.id.detailSeekBarG);
+                    seekBarG.setEnabled(false);
+                    SeekBar seekBarB = view.findViewById(R.id.detailSeekBarB);
+                    seekBarB.setEnabled(false);
                 } else {
                     powerButton.setBackgroundColor(Color.RED);
                     data.getClient().turnLampOff(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
-//                    data.getClient().stopDiscoOfLamp();
-//                    data.getClient().stopFadingOfLamp();
+
+//                    SeekBar seekBarFading = view.findViewById(R.id.detailSeekBarFading);
+//                    seekBarFading.setEnabled(false);
+//                    SeekBar seekBarDisco = view.findViewById(R.id.detailSeekBarDisco);
+//                    seekBarDisco.setEnabled(false);
+                    SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
+                    seekBarR.setEnabled(true);
+                    SeekBar seekBarG = view.findViewById(R.id.detailSeekBarG);
+                    seekBarG.setEnabled(true);
+                    SeekBar seekBarB = view.findViewById(R.id.detailSeekBarB);
+                    seekBarB.setEnabled(true);
                 }
             }
         });
@@ -348,7 +368,20 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
         TextView textViewDiscoValue = view.findViewById(R.id.detailTextViewDiscoValue);
         textViewDiscoValue.setText(data.getLampSelected().getDiscoSpeed() + "");
 
+        SeekBar seekbarR = view.findViewById(R.id.detailSeekBarR);
+        seekbarR.setProgress(data.getLampSelected().getColorValueRed());
 
+        SeekBar seekbarG = view.findViewById(R.id.detailSeekBarG);
+        seekbarG.setProgress(data.getLampSelected().getColorValueGreen());
+
+        SeekBar seekbarB = view.findViewById(R.id.detailSeekBarB);
+        seekbarB.setProgress(data.getLampSelected().getColorValueBlue());
+
+        SeekBar seekbarFading = view.findViewById(R.id.detailSeekBarFading);
+        seekbarFading.setProgress(data.getLampSelected().getFadingSpeed()-500);
+
+        SeekBar seekbarDisco = view.findViewById(R.id.detailSeekBarDisco);
+        seekbarDisco.setProgress(data.getLampSelected().getDiscoSpeed()-500);
     }
 
     private int getIntFromColor(int Red, int Green, int Blue) {
