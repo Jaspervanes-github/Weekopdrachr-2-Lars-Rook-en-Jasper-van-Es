@@ -72,27 +72,15 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
         Button fadingOnOff = view.findViewById(R.id.detailButtonOnOffFading);
         if (data.getLampSelected().isFadingMode()) {
             fadingOnOff.setBackgroundColor(Color.GREEN);
-            seekBarFading.setEnabled(true);
-            seekBarDisco.setEnabled(false);
-            seekBarR.setEnabled(false);
-            seekBarG.setEnabled(false);
-            seekBarB.setEnabled(false);
         } else {
             fadingOnOff.setBackgroundColor(Color.RED);
-            seekBarFading.setEnabled(false);
         }
 
         Button discoOnOff = view.findViewById(R.id.detailButtonOnOffDisco);
         if (data.getLampSelected().isDiscoMode()) {
             discoOnOff.setBackgroundColor(Color.GREEN);
-            seekBarDisco.setEnabled(true);
-            seekBarFading.setEnabled(false);
-            seekBarR.setEnabled(false);
-            seekBarG.setEnabled(false);
-            seekBarB.setEnabled(false);
         } else {
             discoOnOff.setBackgroundColor(Color.RED);
-            seekBarDisco.setEnabled(false);
         }
 
         setAllComponents();
@@ -133,32 +121,11 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 if (data.getLampSelected().isPower()) {
                     powerButton.setBackgroundColor(Color.GREEN);
                     data.getClient().turnLampOn(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
-
-                    SeekBar seekBarFading = view.findViewById(R.id.detailSeekBarFading);
-                    seekBarFading.setEnabled(false);
-                    SeekBar seekBarDisco = view.findViewById(R.id.detailSeekBarDisco);
-                    seekBarDisco.setEnabled(false);
-                    SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
-                    seekBarR.setEnabled(false);
-                    SeekBar seekBarG = view.findViewById(R.id.detailSeekBarG);
-                    seekBarG.setEnabled(false);
-                    SeekBar seekBarB = view.findViewById(R.id.detailSeekBarB);
-                    seekBarB.setEnabled(false);
                 } else {
                     powerButton.setBackgroundColor(Color.RED);
                     data.getClient().turnLampOff(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
-
-//                    SeekBar seekBarFading = view.findViewById(R.id.detailSeekBarFading);
-//                    seekBarFading.setEnabled(false);
-//                    SeekBar seekBarDisco = view.findViewById(R.id.detailSeekBarDisco);
-//                    seekBarDisco.setEnabled(false);
-                    SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
-                    seekBarR.setEnabled(true);
-                    SeekBar seekBarG = view.findViewById(R.id.detailSeekBarG);
-                    seekBarG.setEnabled(true);
-                    SeekBar seekBarB = view.findViewById(R.id.detailSeekBarB);
-                    seekBarB.setEnabled(true);
                 }
+                setSeekBarStates();
             }
         });
 
@@ -296,23 +263,15 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                     data.getLampSelected().setDiscoMode(false);
                     data.getClient().startFadingOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), 900, data.getLampSelected());
 
-                    seekBarFading.setEnabled(true);
-                    seekBarDisco.setEnabled(false);
                     discoOnOff.setBackgroundColor(Color.RED);
-                    seekBarR.setEnabled(false);
-                    seekBarG.setEnabled(false);
-                    seekBarB.setEnabled(false);
                 } else {
                     fadingOnOff.setBackgroundColor(Color.RED);
-                    seekBarFading.setEnabled(false);
                     data.getClient().stopFadingOfLamp();
 
                     if (!(data.getLampSelected().isDiscoMode() && data.getLampSelected().isFadingMode())) {
-                        seekBarR.setEnabled(true);
-                        seekBarG.setEnabled(true);
-                        seekBarB.setEnabled(true);
                     }
                 }
+                setSeekBarStates();
             }
         });
 
@@ -326,24 +285,61 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                     data.getLampSelected().setFadingMode(false);
                     data.getClient().startDiscoOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), data.getLampSelected());
 
-                    seekBarDisco.setEnabled(true);
-                    seekBarFading.setEnabled(false);
                     fadingOnOff.setBackgroundColor(Color.RED);
-                    seekBarR.setEnabled(false);
-                    seekBarG.setEnabled(false);
-                    seekBarB.setEnabled(false);
                 } else {
                     discoOnOff.setBackgroundColor(Color.RED);
-                    seekBarDisco.setEnabled(false);
                     data.getClient().stopDiscoOfLamp();
                     if (!(data.getLampSelected().isDiscoMode() && data.getLampSelected().isFadingMode())) {
-                        seekBarR.setEnabled(true);
-                        seekBarG.setEnabled(true);
-                        seekBarB.setEnabled(true);
                     }
                 }
+                setSeekBarStates();
             }
         });
+
+        setSeekBarStates();
+    }
+
+    private void setSeekBarStates() {
+        SeekBar seekBarFading = view.findViewById(R.id.detailSeekBarFading);
+        SeekBar seekBarDisco = view.findViewById(R.id.detailSeekBarDisco);
+        SeekBar seekBarR = view.findViewById(R.id.detailSeekBarR);
+        SeekBar seekBarG = view.findViewById(R.id.detailSeekBarG);
+        SeekBar seekBarB = view.findViewById(R.id.detailSeekBarB);
+        Button discoOnOff = view.findViewById(R.id.detailButtonOnOffDisco);
+        Button fadingOnOff = view.findViewById(R.id.detailButtonOnOffFading);
+
+        if (data.getLampSelected().isPower()) {
+            if (!data.getLampSelected().isDiscoMode() && !data.getLampSelected().isFadingMode()) {
+                seekBarDisco.setEnabled(false);
+                seekBarFading.setEnabled(false);
+                seekBarR.setEnabled(true);
+                seekBarG.setEnabled(true);
+                seekBarB.setEnabled(true);
+                discoOnOff.setEnabled(true);
+                fadingOnOff.setEnabled(true);
+            } else if (data.getLampSelected().isDiscoMode()) {
+                seekBarDisco.setEnabled(true);
+                seekBarFading.setEnabled(false);
+                seekBarR.setEnabled(false);
+                seekBarG.setEnabled(false);
+                seekBarB.setEnabled(false);
+            } else if (data.getLampSelected().isFadingMode()) {
+                seekBarDisco.setEnabled(false);
+                seekBarFading.setEnabled(true);
+                seekBarR.setEnabled(false);
+                seekBarG.setEnabled(false);
+                seekBarB.setEnabled(false);
+            }
+        } else {
+            seekBarDisco.setEnabled(false);
+            seekBarFading.setEnabled(false);
+            seekBarR.setEnabled(false);
+            seekBarG.setEnabled(false);
+            seekBarB.setEnabled(false);
+
+            discoOnOff.setEnabled(false);
+            fadingOnOff.setEnabled(false);
+        }
     }
 
     private void updateComponents() {
@@ -378,10 +374,12 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
         seekbarB.setProgress(data.getLampSelected().getColorValueBlue());
 
         SeekBar seekbarFading = view.findViewById(R.id.detailSeekBarFading);
-        seekbarFading.setProgress(data.getLampSelected().getFadingSpeed()-500);
+        seekbarFading.setProgress(data.getLampSelected().getFadingSpeed() - 500);
 
         SeekBar seekbarDisco = view.findViewById(R.id.detailSeekBarDisco);
-        seekbarDisco.setProgress(data.getLampSelected().getDiscoSpeed()-500);
+        seekbarDisco.setProgress(data.getLampSelected().getDiscoSpeed() - 500);
+
+        setSeekBarStates();
     }
 
     private int getIntFromColor(int Red, int Green, int Blue) {

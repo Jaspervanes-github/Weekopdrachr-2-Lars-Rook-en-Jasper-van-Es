@@ -475,6 +475,7 @@ public class Client {
         if (this.isConnected && Data.getInstance().getLampSelected().isFadingMode()) {
             this.fadingTimer.purge();
             this.fadingTimer.cancel();
+            Data.getInstance().getLampSelected().setFadingMode(false);
         }
     }
 
@@ -522,6 +523,7 @@ public class Client {
         if (this.isConnected && Data.getInstance().getLampSelected().isDiscoMode()) {
             this.discoTimer.purge();
             this.discoTimer.cancel();
+            Data.getInstance().getLampSelected().setDiscoMode(false);
         }
     }
 
