@@ -63,6 +63,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
                 holder.onOrOffButton.setBackgroundColor(Color.RED);
                 Data.getInstance().getClient().turnLampOff(position);
             }
+
+            if (Data.getInstance().getLampSelected().isFadingMode()) {
+                Data.getInstance().getLampSelected().setFadingMode(false);
+                Data.getInstance().getClient().stopFadingOfLamp();
+            } else if (Data.getInstance().getLampSelected().isDiscoMode()) {
+                Data.getInstance().getLampSelected().setDiscoMode(false);
+                Data.getInstance().getClient().stopDiscoOfLamp();
+            }
         });
     }
 

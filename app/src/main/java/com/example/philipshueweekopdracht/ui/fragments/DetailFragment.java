@@ -124,7 +124,16 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
                 } else {
                     powerButton.setBackgroundColor(Color.RED);
                     data.getClient().turnLampOff(Integer.parseInt(data.getLampSelected().getLampID()) - 1);
+
+                    if (data.getLampSelected().isFadingMode()) {
+                        data.getLampSelected().setFadingMode(false);
+                        data.getClient().stopFadingOfLamp();
+                    } else if (data.getLampSelected().isDiscoMode()) {
+                        data.getLampSelected().setDiscoMode(false);
+                        data.getClient().stopDiscoOfLamp();
+                    }
                 }
+
                 setSeekBarStates();
             }
         });
@@ -260,7 +269,12 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
 
                 if (data.getLampSelected().isFadingMode()) {
                     fadingOnOff.setBackgroundColor(Color.GREEN);
-                    data.getLampSelected().setDiscoMode(false);
+
+                    if (data.getLampSelected().isDiscoMode()) {
+                        data.getLampSelected().setDiscoMode(false);
+                        data.getClient().stopDiscoOfLamp();
+                    }
+
                     data.getClient().startFadingOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), 900, data.getLampSelected());
 
                     discoOnOff.setBackgroundColor(Color.RED);
@@ -282,7 +296,12 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
 
                 if (data.getLampSelected().isDiscoMode()) {
                     discoOnOff.setBackgroundColor(Color.GREEN);
-                    data.getLampSelected().setFadingMode(false);
+
+                    if (data.getLampSelected().isFadingMode()) {
+                        data.getLampSelected().setFadingMode(false);
+                        data.getClient().stopFadingOfLamp();
+                    }
+
                     data.getClient().startDiscoOfLamp(Integer.parseInt(data.getLampSelected().getLampID()), data.getLampSelected());
 
                     fadingOnOff.setBackgroundColor(Color.RED);
@@ -343,6 +362,20 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
     }
 
     private void updateComponents() {
+        Button fadingOnOff = view.findViewById(R.id.detailButtonOnOffFading);
+        if (data.getLampSelected().isFadingMode()) {
+            fadingOnOff.setBackgroundColor(Color.GREEN);
+        } else {
+            fadingOnOff.setBackgroundColor(Color.RED);
+        }
+
+        Button discoOnOff = view.findViewById(R.id.detailButtonOnOffDisco);
+        if (data.getLampSelected().isDiscoMode()) {
+            discoOnOff.setBackgroundColor(Color.GREEN);
+        } else {
+            discoOnOff.setBackgroundColor(Color.RED);
+        }
+
         TextView test = view.findViewById(R.id.detailTextViewTitle);
         test.setText(data.getLampSelected().getNameLamp());
 
