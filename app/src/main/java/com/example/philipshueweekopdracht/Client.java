@@ -274,6 +274,13 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Data.getInstance().getAllLamps().get(id - 1).setHueValue(hue);
+
+                                int[] rgb = ColorCalculator.calculateRGBColor(
+                                        Data.getInstance().getAllLamps().get(id - 1).getHueValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getSatValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getBriValue());
+
+                                Data.getInstance().getAllLamps().get(id - 1).setRGBValues(rgb[0], rgb[1], rgb[2]);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampHue()");
@@ -311,6 +318,13 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Data.getInstance().getAllLamps().get(id - 1).setSatValue(saturation);
+
+                                int[] rgb = ColorCalculator.calculateRGBColor(
+                                        Data.getInstance().getAllLamps().get(id - 1).getHueValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getSatValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getBriValue());
+
+                                Data.getInstance().getAllLamps().get(id - 1).setRGBValues(rgb[0], rgb[1], rgb[2]);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampSaturation()");
@@ -348,6 +362,13 @@ public class Client {
                             JSONObject responseObject = responseArray.getJSONObject(i);
                             if (responseObject.has("success")) {
                                 Data.getInstance().getAllLamps().get(id - 1).setBriValue(brightness);
+
+                                int[] rgb = ColorCalculator.calculateRGBColor(
+                                        Data.getInstance().getAllLamps().get(id - 1).getHueValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getSatValue(),
+                                        Data.getInstance().getAllLamps().get(id - 1).getBriValue());
+
+                                Data.getInstance().getAllLamps().get(id - 1).setRGBValues(rgb[0], rgb[1], rgb[2]);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampBrightness()");
@@ -370,7 +391,7 @@ public class Client {
 
     public void setLampColor(int id, int r, int g, int b) {
         if (this.isConnected) {
-            float[] hsb = calculateHSBColor(r, g, b);
+            int[] hsb = ColorCalculator.calculateHSBColor(r, g, b);
 
             client.newCall(createPutRequest("/lights/" + id + "/state", "{\n" +
                     "    \"hue\":" + hsb[0] + ",\n" +
@@ -398,9 +419,13 @@ public class Client {
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampColor,
                                     Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
-                            Data.getInstance().getAllLamps().get(id - 1).setHueValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/hue"));
-                            Data.getInstance().getAllLamps().get(id - 1).setSatValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/sat"));
-                            Data.getInstance().getAllLamps().get(id - 1).setBriValue(responseArray.getJSONObject(0).getInt("/lights/" + id + "/state/bri"));
+                            Data.getInstance().getAllLamps().get(id - 1).setRGBValues(r,g,b);
+
+                            int[] hsb = ColorCalculator.calculateHSBColor(r, g, b);
+
+                            Data.getInstance().getAllLamps().get(id - 1).setHueValue(hsb[0]);
+                            Data.getInstance().getAllLamps().get(id - 1).setSatValue(hsb[1]);
+                            Data.getInstance().getAllLamps().get(id - 1).setBriValue(hsb[2]);
                         }
 
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
@@ -417,17 +442,6 @@ public class Client {
         }
     }
 
-    private float[] calculateHSBColor(int red, int green, int blue) {
-        float[] hsb = new float[3];
-        Color.RGBToHSV(red, green, blue, hsb);
-
-        hsb[0] = (Math.round((hsb[0] / 360) * 65535));
-        hsb[1] = (Math.round(hsb[1] * 255));
-        hsb[2] = (Math.round(hsb[2] * 255));
-
-        return hsb;
-    }
-
     public void startFadingOfLamp(int id, int increaseHueAmount, Lamp lampSelected) {
         if (this.isConnected) {
             setLampSaturation(id, 254);
@@ -439,7 +453,7 @@ public class Client {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            int hue = Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount;
+                            int hue = Data.getInstance().getAllLamps().get(id - 1).getHueValue() + increaseHueAmount;
                             if (hue >= 65535) {
                                 hue = hue - 65535;
                             }
@@ -461,7 +475,7 @@ public class Client {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                int hue = Data.getInstance().getAllLamps().get(id-1).getHueValue() + increaseHueAmount;
+                int hue = Data.getInstance().getAllLamps().get(id - 1).getHueValue() + increaseHueAmount;
                 if (hue >= 65535) {
                     hue = hue - 65535;
                 }
@@ -598,12 +612,14 @@ public class Client {
                                         (float) (responseObject.getJSONObject("state").getInt("sat") / 255.0),
                                         (float) (responseObject.getJSONObject("state").getInt("bri") / 255.0)});
 
+                                int[] hsb = ColorCalculator.calculateHSBColor(Color.red(color), Color.green(color), Color.blue(color));
                                 lampList.add(new Lamp(
                                         key,
                                         responseObject.getString("name"), responseObject.getJSONObject("state").getBoolean("on"),
                                         Color.red(color),
                                         Color.green(color),
-                                        Color.blue(color)));
+                                        Color.blue(color),
+                                        hsb[0], hsb[1], hsb[2]));
                             }
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
 

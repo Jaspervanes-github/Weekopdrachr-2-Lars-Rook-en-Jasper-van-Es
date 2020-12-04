@@ -362,7 +362,6 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
     }
 
     private void updateComponents() {
-        System.out.println("IN UPDATE");
         Button fadingOnOff = view.findViewById(R.id.detailButtonOnOffFading);
         if (data.getLampSelected().isFadingMode()) {
             fadingOnOff.setBackgroundColor(Color.GREEN);

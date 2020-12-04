@@ -21,20 +21,31 @@ public class Lamp {
     private boolean fadingMode;
     private boolean discoMode;
 
-    public Lamp(String lampID, String name, boolean OnOrOff,int r, int g, int b){
+    public Lamp(String lampID, String name, boolean OnOrOff,int r, int g, int b, int hue, int sat, int bri){
         this.lampID = lampID;
         this.nameLamp = name;
         this.power = OnOrOff;
         this.colorValueRed = r;
         this.colorValueGreen = g;
         this.colorValueBlue = b;
+        this.hueValue = hue;
+        this.satValue = sat;
+        this.briValue = bri;
 
-        calculateHSBColor();
+        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
+        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
+
+//        calculateHSBColor();
+
+        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
+        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
 
         this.fadingSpeed = 500;
         this.discoSpeed = 500;
         this.fadingMode = false;
         this.discoMode = false;
+
+
     }
 
     public int getHueValue() {
@@ -43,7 +54,7 @@ public class Lamp {
 
     public void setHueValue(int hueValue) {
         this.hueValue = hueValue;
-        calculateRGBColor();
+//        calculateRGBColor();
     }
 
     public int getSatValue() {
@@ -52,7 +63,7 @@ public class Lamp {
 
     public void setSatValue(int satValue) {
         this.satValue = satValue;
-        calculateRGBColor();
+//        calculateRGBColor();
     }
 
     public int getBriValue() {
@@ -61,7 +72,7 @@ public class Lamp {
 
     public void setBriValue(int briValue) {
         this.briValue = briValue;
-        calculateRGBColor();
+//        calculateRGBColor();
     }
 
     public String getLampID() {
@@ -112,23 +123,35 @@ public class Lamp {
         this.colorValueBlue = colorValueBlue;
     }
 
-    private void calculateRGBColor() {
-        int color = Color.HSVToColor(new float[]{
-                (float) ((this.hueValue / 65535.0) * 360.0),
-                (float) (this.satValue / 255.0),
-                (float) (this.briValue / 255.0)});
-        setColorValueRed(Color.red(color));
-        setColorValueGreen(Color.green(color));
-        setColorValueBlue(Color.blue(color));
-    }
+//    private void calculateRGBColor() {
+//        int color = Color.HSVToColor(new float[]{
+//                (float) ((this.hueValue / 65535.0) * 360.0),
+//                (float) (this.satValue / 255.0),
+//                (float) (this.briValue / 255.0)});
+//        setColorValueRed(Color.red(color));
+//        setColorValueGreen(Color.green(color));
+//        setColorValueBlue(Color.blue(color));
+//
+////        System.out.println("IN METHOD R: " + this.colorValueRed + " G: " + this.colorValueGreen + " B: " + this.colorValueBlue);
+//
+//    }
+//
+//    private void calculateHSBColor(){
+//        float[] hsb = new float[3];
+//
+//        Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
+//
+//        System.out.println(hsb[0] + ", " + hsb[1] + ", " + hsb[2]);
+//
+//        setHueValue(Math.round((hsb[0]/360)* 65535));
+//        setSatValue(Math.round(hsb[1]*255));
+//        setBriValue(Math.round(hsb[2]*255));
+//    }
 
-    private void calculateHSBColor(){
-        float[] hsb = new float[3];
-        Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
-
-        setHueValue(Math.round((hsb[0]/360)* 65535));
-        setSatValue(Math.round(hsb[1]*255));
-        setBriValue(Math.round(hsb[2]*255));
+    public void setRGBValues(int red, int green, int blue){
+        setColorValueRed(red);
+        setColorValueGreen(green);
+        setColorValueBlue(blue);
     }
 
     public int getFadingSpeed() {
