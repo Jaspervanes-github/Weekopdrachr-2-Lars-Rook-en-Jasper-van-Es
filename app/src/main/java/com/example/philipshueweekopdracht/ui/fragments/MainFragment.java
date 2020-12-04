@@ -68,24 +68,6 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
         return root;
     }
 
-    private void init(){
-        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-//        data.getAllLamps().add(new Lamp("1", "Kitchen", true, 0, 255, 0));
-//        data.getAllLamps().add(new Lamp("2", "Bedroom", true, 255, 0, 0));
-//        data.getAllLamps().add(new Lamp("3", "Livingroom", true, 0, 0, 255));
-    }
-
     @Override
     public void onItemClick(int clickPosition) {
         //data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));

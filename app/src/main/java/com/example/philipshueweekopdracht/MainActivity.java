@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.philipshueweekopdracht.ui.ViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -48,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                             //switch all lamps on/off
                             data.getClient().setPowerOfAllLamps(data.isAllPowerOn());
                             data.setAllPowerOn(!data.isAllPowerOn());
+
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    data.updateViewModelSelectedLamp();
+                                    data.updateViewModelLampList();
+                                }
+                            });
                         }
                         case R.id.navigation_refresh: {
                             //refresh current lamps

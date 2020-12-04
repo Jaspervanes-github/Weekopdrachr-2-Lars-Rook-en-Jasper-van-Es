@@ -6,6 +6,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     defaultConfig {
         applicationId "com.example.philipshueweekopdracht"
         minSdkVersion 27
@@ -29,7 +33,9 @@ android {
 }
 
 dependencies {
-
+// required if you want to use Mockito for Android tests
+    testImplementation "org.mockito:mockito-core:2.19.0"
+    androidTestImplementation 'org.mockito:mockito-android:2.18.3'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:mockwebserver:4.9.0'
