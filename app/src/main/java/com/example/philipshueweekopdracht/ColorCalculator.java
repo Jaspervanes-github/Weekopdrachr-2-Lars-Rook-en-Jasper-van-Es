@@ -39,4 +39,5 @@ public class ColorCalculator {
 
         return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
     }
+
 }
