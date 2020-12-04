@@ -210,6 +210,13 @@ public class Client {
                 turnLampOff(i);
             }
 
+            if (Data.getInstance().getLampSelected().isFadingMode()) {
+                Data.getInstance().getAllLamps().get(i).setFadingMode(false);
+                stopFadingOfLamp(Data.getInstance().getAllLamps().get(i));
+            } else if (Data.getInstance().getAllLamps().get(i).isDiscoMode()) {
+                Data.getInstance().getAllLamps().get(i).setDiscoMode(false);
+                stopDiscoOfLamp(Data.getInstance().getAllLamps().get(i));
+            }
             try {
                 Thread.sleep(25);
             } catch (InterruptedException e) {
@@ -419,7 +426,7 @@ public class Client {
                             Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampColor,
                                     Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
-                            Data.getInstance().getAllLamps().get(id - 1).setRGBValues(r,g,b);
+                            Data.getInstance().getAllLamps().get(id - 1).setRGBValues(r, g, b);
 
                             int[] hsb = ColorCalculator.calculateHSBColor(r, g, b);
 
@@ -498,6 +505,14 @@ public class Client {
         }
     }
 
+    public void stopFadingOfLamp(Lamp lamp) {
+        if (this.isConnected && Data.getInstance().getLampSelected().isFadingMode()) {
+            this.fadingTimer.purge();
+            this.fadingTimer.cancel();
+            lamp.setFadingMode(false);
+        }
+    }
+
     public void startDiscoOfLamp(int id, Lamp lampSelected) {
         if (this.isConnected) {
             setLampSaturation(id, 254);
@@ -546,84 +561,41 @@ public class Client {
         }
     }
 
-    public void setLampName(int id, String name) {
-        String previousName = Data.getInstance().getAllLamps().get(id - 1).getNameLamp();
-        if (this.isConnected)
-            client.newCall(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}")).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.d("FAILURE", "In OnFailure() in setLampName()");
-                }
-
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    try {
-                        JSONArray responseArray = new JSONArray(response.body().string());
-
-                        for (int i = 0; i < responseArray.length(); i++) {
-                            JSONObject responseObject = responseArray.getJSONObject(i);
-                            if (responseObject.has("success")) {
-                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampName, previousName,
-                                        Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
-
-                                Data.getInstance().getAllLamps().get(id - 1).setNameLamp(name);
-                            } else {
-                                //ERROR
-                                Log.d("ERROR", "Error in response setLampName()");
-                            }
-                        }
-
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Data.getInstance().updateViewModelLampList();
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+    public void stopDiscoOfLamp(Lamp lamp) {
+        if (this.isConnected && Data.getInstance().getLampSelected().isDiscoMode()) {
+            this.discoTimer.purge();
+            this.discoTimer.cancel();
+            lamp.setDiscoMode(false);
+        }
     }
 
-    public void getAllLamps() {
-        if (this.isConnected)
-            client.newCall(createGetRequest("/lights")).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.d("FAILURE", "In OnFailure() in getAllLamps()");
-                }
 
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    try {
-                        if (response.isSuccessful()) {
-                            ArrayList<Lamp> lampList = new ArrayList<>();
+        public void setLampName ( int id, String name){
+            String previousName = Data.getInstance().getAllLamps().get(id - 1).getNameLamp();
+            if (this.isConnected)
+                client.newCall(createPutRequest("/lights/" + id, "{\"name\":\"" + name + "\"}")).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.d("FAILURE", "In OnFailure() in setLampName()");
+                    }
 
-                            JSONObject responseArray = new JSONObject(response.body().string());
-                            Iterator<String> keys = responseArray.keys();
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        try {
+                            JSONArray responseArray = new JSONArray(response.body().string());
 
-                            while (keys.hasNext()) {
-                                String key = keys.next();
-                                JSONObject responseObject = responseArray.getJSONObject(key);
+                            for (int i = 0; i < responseArray.length(); i++) {
+                                JSONObject responseObject = responseArray.getJSONObject(i);
+                                if (responseObject.has("success")) {
+                                    Message.createToastMessage(Data.getInstance().getContext().getString(R.string.setLampName, previousName,
+                                            Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
-                                int color = Color.HSVToColor(new float[]{
-                                        (float) ((responseObject.getJSONObject("state").getInt("hue") / 65535.0) * 360.0),
-                                        (float) (responseObject.getJSONObject("state").getInt("sat") / 255.0),
-                                        (float) (responseObject.getJSONObject("state").getInt("bri") / 255.0)});
-
-                                int[] hsb = ColorCalculator.calculateHSBColor(Color.red(color), Color.green(color), Color.blue(color));
-                                lampList.add(new Lamp(
-                                        key,
-                                        responseObject.getString("name"), responseObject.getJSONObject("state").getBoolean("on"),
-                                        Color.red(color),
-                                        Color.green(color),
-                                        Color.blue(color),
-                                        hsb[0], hsb[1], hsb[2]));
+                                    Data.getInstance().getAllLamps().get(id - 1).setNameLamp(name);
+                                } else {
+                                    //ERROR
+                                    Log.d("ERROR", "Error in response setLampName()");
+                                }
                             }
-                            Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
-
-                            Data.getInstance().setAllLamps(lampList);
 
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
@@ -631,16 +603,68 @@ public class Client {
                                     Data.getInstance().updateViewModelLampList();
                                 }
                             });
-
-                        } else {
-                            //ERROR
-                            Log.d("ERROR", "Error in response getAllLamps()");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            });
-    }
+                });
+        }
 
-}
+        public void getAllLamps () {
+            if (this.isConnected)
+                client.newCall(createGetRequest("/lights")).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Log.d("FAILURE", "In OnFailure() in getAllLamps()");
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        try {
+                            if (response.isSuccessful()) {
+                                ArrayList<Lamp> lampList = new ArrayList<>();
+
+                                JSONObject responseArray = new JSONObject(response.body().string());
+                                Iterator<String> keys = responseArray.keys();
+
+                                while (keys.hasNext()) {
+                                    String key = keys.next();
+                                    JSONObject responseObject = responseArray.getJSONObject(key);
+
+                                    int color = Color.HSVToColor(new float[]{
+                                            (float) ((responseObject.getJSONObject("state").getInt("hue") / 65535.0) * 360.0),
+                                            (float) (responseObject.getJSONObject("state").getInt("sat") / 255.0),
+                                            (float) (responseObject.getJSONObject("state").getInt("bri") / 255.0)});
+
+                                    int[] hsb = ColorCalculator.calculateHSBColor(Color.red(color), Color.green(color), Color.blue(color));
+                                    lampList.add(new Lamp(
+                                            key,
+                                            responseObject.getString("name"), responseObject.getJSONObject("state").getBoolean("on"),
+                                            Color.red(color),
+                                            Color.green(color),
+                                            Color.blue(color),
+                                            hsb[0], hsb[1], hsb[2]));
+                                }
+                                Message.createToastMessage(Data.getInstance().getContext().getString(R.string.getAllLamps), Toast.LENGTH_SHORT);
+
+                                Data.getInstance().setAllLamps(lampList);
+
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Data.getInstance().updateViewModelLampList();
+                                    }
+                                });
+
+                            } else {
+                                //ERROR
+                                Log.d("ERROR", "Error in response getAllLamps()");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        }
+
+    }
