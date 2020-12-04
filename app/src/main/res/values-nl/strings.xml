@@ -13,4 +13,12 @@
     <string name="getAllLamps">De lijst met lampen is ververst</string>
     <string name="linkButtonDialog">Klik op de link knop op de Philips Hue Bridge om de app te koppelen, zorg ervoor dat je dit doet voordat je op de OK knop drukt</string>
     <string name="title_power">Status</string>
+    <string name="button_back">terug</string>
+    <string name="textViewFading">Verloopsnelheid</string>
+    <string name="textViewDisco">Discosnelheid</string>
+    <string name="textViewPower">status van de lamp:</string>
+    <string name="textViewName">Voer een nieuwe naam in:</string>
+    <string name="textViewR">R:</string>
+    <string name="textViewG">G:</string>
+    <string name="textViewB">B:</string>
 </resources>

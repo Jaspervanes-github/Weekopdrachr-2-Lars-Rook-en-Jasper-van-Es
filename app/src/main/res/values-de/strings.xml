@@ -13,4 +13,12 @@
     <string name="setLampName">Der Name der Lampe %1$ wurde in %2$s geändert</string>
     <string name="getAllLamps">Die Liste mit Lampen wurde aktualisiert</string>
     <string name="linkButtonDialog">"Klicken Sie auf der Philips Hue Bridge auf die Link-Schaltfläche, um die App zu koppeln. Stellen Sie sicher, dass Sie dies tun, bevor Sie auf die Schaltfläche OK klicken "</string>
+    <string name="textViewR">R:</string>
+    <string name="textViewG">G:</string>
+    <string name="textViewB">B:</string>
+    <string name="button_back">" zurück"</string>
+    <string name="textViewFading">" Fading-Geschwindigkeit"</string>
+    <string name="textViewDisco">"Disco-Geschwindigkeit "</string>
+    <string name="textViewPower">strom der lampe:</string>
+    <string name="textViewName">" Neuen namen eingeben:"</string>
 </resources>

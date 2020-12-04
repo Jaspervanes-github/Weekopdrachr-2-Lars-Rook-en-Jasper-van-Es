@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         data.setManager(getSupportFragmentManager());
         data.getManager().beginTransaction().replace(R.id.fragment_container, data.getCurrentFragment()).commit();
 
+        if(!data.getClient().isConnected)
         data.getClient().Connect();
         data.getClient().getAllLamps();
     }

@@ -32,7 +32,7 @@ public class Client {
     private String username;
     private String ipAddress;
     private int port;
-    private boolean isConnected;
+    public boolean isConnected;
 
 
     private final Handler handler;
