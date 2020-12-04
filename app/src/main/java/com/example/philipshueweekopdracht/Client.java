@@ -209,6 +209,12 @@ public class Client {
             } else {
                 turnLampOff(i);
             }
+
+            try {
+                Thread.sleep(25);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -415,7 +421,6 @@ public class Client {
         float[] hsb = new float[3];
         Color.RGBToHSV(red, green, blue, hsb);
 
-        System.out.println((hsb[0] / 360) * 65535 + "   " + hsb[1] * 255 + "  " + hsb[2] * 255);
         hsb[0] = (Math.round((hsb[0] / 360) * 65535));
         hsb[1] = (Math.round(hsb[1] * 255));
         hsb[2] = (Math.round(hsb[2] * 255));
@@ -548,7 +553,6 @@ public class Client {
                                         Data.getInstance().getAllLamps().get(id - 1).getNameLamp()), Toast.LENGTH_SHORT);
 
                                 Data.getInstance().getAllLamps().get(id - 1).setNameLamp(name);
-                                System.out.println(name);
                             } else {
                                 //ERROR
                                 Log.d("ERROR", "Error in response setLampName()");

@@ -24,7 +24,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     private List<Lamp> allLamps;
     private OnItemClickListener clickListener;
 
-    public Adapter(Context cntxt, List<Lamp> lamps, OnItemClickListener listener){
+    public Adapter(Context cntxt, List<Lamp> lamps, OnItemClickListener listener) {
         this.context = cntxt;
         this.allLamps = lamps;
         this.clickListener = listener;
@@ -44,32 +44,32 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
         holder.title.setText(selectedLamp.getNameLamp() + "\n" + selectedLamp.getLampID());
         holder.layout.getBackground().setTint(getIntFromColor(selectedLamp.getColorValueRed(), selectedLamp.getColorValueGreen(), selectedLamp.getColorValueBlue()));
 
-        if(selectedLamp.isPower()){
+        if (selectedLamp.isPower()) {
             holder.onOrOffButton.setBackgroundColor(Color.GREEN);
-        } else{
+        } else {
             holder.onOrOffButton.setBackgroundColor(Color.RED);
         }
 
         holder.onOrOffButton.setOnClickListener((view) -> {
             //TODO: check if the request succeded!
             selectedLamp.setPower(!selectedLamp.isPower());
-            if(selectedLamp.isPower()){
-               // holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_ON));
+            if (selectedLamp.isPower()) {
+                // holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_ON));
                 holder.onOrOffButton.setBackgroundColor(Color.GREEN);
                 Data.getInstance().getClient().turnLampOn(position);
-            }
-            else{
+            } else {
                 //holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_OFF));
                 holder.onOrOffButton.setBackgroundColor(Color.RED);
                 Data.getInstance().getClient().turnLampOff(position);
             }
-
-            if (Data.getInstance().getLampSelected().isFadingMode()) {
-                Data.getInstance().getLampSelected().setFadingMode(false);
-                Data.getInstance().getClient().stopFadingOfLamp();
-            } else if (Data.getInstance().getLampSelected().isDiscoMode()) {
-                Data.getInstance().getLampSelected().setDiscoMode(false);
-                Data.getInstance().getClient().stopDiscoOfLamp();
+            if (Data.getInstance().getLampSelected() != null) {
+                if (Data.getInstance().getLampSelected().isFadingMode()) {
+                    Data.getInstance().getLampSelected().setFadingMode(false);
+                    Data.getInstance().getClient().stopFadingOfLamp();
+                } else if (Data.getInstance().getLampSelected().isDiscoMode()) {
+                    Data.getInstance().getLampSelected().setDiscoMode(false);
+                    Data.getInstance().getClient().stopDiscoOfLamp();
+                }
             }
         });
     }
@@ -80,14 +80,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     }
 
 
-
-
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int clickPosition);
     }
 
 
-    public class LampViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class LampViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView title;
         private Button onOrOffButton;
@@ -110,7 +108,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     }
 
 
-    private int getIntFromColor(int Red, int Green, int Blue){
+    private int getIntFromColor(int Red, int Green, int Blue) {
         Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
         Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
         Blue = Blue & 0x000000FF; //Mask out anything not blue.

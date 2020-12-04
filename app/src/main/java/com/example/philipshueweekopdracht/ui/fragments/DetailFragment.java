@@ -93,7 +93,7 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
         @Override
         public void onChanged(Lamp lamp) {
             //TODO: fill this up for the selected Lamp to keep the detail screen up to date.
-            setAllComponents();
+            updateComponents();
         }
     };
 
@@ -362,6 +362,7 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
     }
 
     private void updateComponents() {
+        System.out.println("IN UPDATE");
         Button fadingOnOff = view.findViewById(R.id.detailButtonOnOffFading);
         if (data.getLampSelected().isFadingMode()) {
             fadingOnOff.setBackgroundColor(Color.GREEN);
@@ -374,6 +375,13 @@ public class DetailFragment extends Fragment implements LifecycleOwner {
             discoOnOff.setBackgroundColor(Color.GREEN);
         } else {
             discoOnOff.setBackgroundColor(Color.RED);
+        }
+
+        Button powerOnOff = view.findViewById(R.id.detailButtonOnOff);
+        if (data.getLampSelected().isPower()) {
+            powerOnOff.setBackgroundColor(Color.GREEN);
+        } else {
+            powerOnOff.setBackgroundColor(Color.RED);
         }
 
         TextView test = view.findViewById(R.id.detailTextViewTitle);
