@@ -19,14 +19,16 @@ public class LampTest extends TestCase {
 
     @Before
     public void init() {
-        lamp = new Lamp("1", "Test lamp", true, 255, 10, 20);
+        lamp = new Lamp("1", "Test lamp", true, 200, 10, 20);
         testLamp = Mockito.mock(Lamp.class);
     }
 
     @Test
     public void testGetHueValue() {
-        Mockito.when(testLamp.getHueValue()).thenReturn(lamp.getHueValue());
-        assertEquals(357, testLamp.getHueValue());
+        Mockito.when(testLamp.getHueValue()).thenReturn(357);
+        Mockito.verify(testLamp);
+        assertEquals(Mockito.anyInt(), testLamp.getHueValue());
+
     }
 
     @Test

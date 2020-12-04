@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.philipshueweekopdracht.ColorCalculator;
 import com.example.philipshueweekopdracht.Data;
 import com.example.philipshueweekopdracht.Lamp;
 import com.example.philipshueweekopdracht.R;
@@ -42,7 +43,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
     public void onBindViewHolder(@NonNull LampViewHolder holder, int position) {
         Lamp selectedLamp = allLamps.get(position);
         holder.title.setText(selectedLamp.getNameLamp() + "\n" + selectedLamp.getLampID());
-        holder.layout.getBackground().setTint(getIntFromColor(selectedLamp.getColorValueRed(), selectedLamp.getColorValueGreen(), selectedLamp.getColorValueBlue()));
+        holder.layout.getBackground().setTint(ColorCalculator.getIntFromColor(selectedLamp.getColorValueRed(), selectedLamp.getColorValueGreen(), selectedLamp.getColorValueBlue()));
 
         if (selectedLamp.isPower()) {
             holder.onOrOffButton.setBackgroundColor(Color.GREEN);
@@ -106,15 +107,5 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
             clickListener.onItemClick(clickPosition);
         }
     }
-
-
-    private int getIntFromColor(int Red, int Green, int Blue) {
-        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
-        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
-        Blue = Blue & 0x000000FF; //Mask out anything not blue.
-
-        return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
-    }
-
 
 }

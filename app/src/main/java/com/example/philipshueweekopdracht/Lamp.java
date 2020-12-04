@@ -29,12 +29,20 @@ public class Lamp {
         this.colorValueGreen = g;
         this.colorValueBlue = b;
 
+        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
+        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
+
         calculateHSBColor();
+
+        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
+        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
 
         this.fadingSpeed = 500;
         this.discoSpeed = 500;
         this.fadingMode = false;
         this.discoMode = false;
+
+
     }
 
     public int getHueValue() {
@@ -120,11 +128,17 @@ public class Lamp {
         setColorValueRed(Color.red(color));
         setColorValueGreen(Color.green(color));
         setColorValueBlue(Color.blue(color));
+
+//        System.out.println("IN METHOD R: " + this.colorValueRed + " G: " + this.colorValueGreen + " B: " + this.colorValueBlue);
+
     }
 
     private void calculateHSBColor(){
         float[] hsb = new float[3];
+
         Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
+
+        System.out.println(hsb[0] + ", " + hsb[1] + ", " + hsb[2]);
 
         setHueValue(Math.round((hsb[0]/360)* 65535));
         setSatValue(Math.round(hsb[1]*255));
