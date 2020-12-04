@@ -123,31 +123,6 @@ public class Lamp {
         this.colorValueBlue = colorValueBlue;
     }
 
-//    private void calculateRGBColor() {
-//        int color = Color.HSVToColor(new float[]{
-//                (float) ((this.hueValue / 65535.0) * 360.0),
-//                (float) (this.satValue / 255.0),
-//                (float) (this.briValue / 255.0)});
-//        setColorValueRed(Color.red(color));
-//        setColorValueGreen(Color.green(color));
-//        setColorValueBlue(Color.blue(color));
-//
-////        System.out.println("IN METHOD R: " + this.colorValueRed + " G: " + this.colorValueGreen + " B: " + this.colorValueBlue);
-//
-//    }
-//
-//    private void calculateHSBColor(){
-//        float[] hsb = new float[3];
-//
-//        Color.RGBToHSV(this.colorValueRed,this.colorValueGreen,this.colorValueBlue,hsb);
-//
-//        System.out.println(hsb[0] + ", " + hsb[1] + ", " + hsb[2]);
-//
-//        setHueValue(Math.round((hsb[0]/360)* 65535));
-//        setSatValue(Math.round(hsb[1]*255));
-//        setBriValue(Math.round(hsb[2]*255));
-//    }
-
     public void setRGBValues(int red, int green, int blue){
         setColorValueRed(red);
         setColorValueGreen(green);
