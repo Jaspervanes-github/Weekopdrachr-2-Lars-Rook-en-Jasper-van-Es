@@ -38,10 +38,6 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
     private Context context;
     private MainFragment mainFragment;
 
-   // public MainFragment(MainActivity mainActivity){
-    //    main = mainActivity;
-    //}
-
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         data  = Data.getInstance();
@@ -70,14 +66,11 @@ public class MainFragment extends Fragment implements Adapter.OnItemClickListene
 
     @Override
     public void onItemClick(int clickPosition) {
-        //data.getViewModel().setLampSelected(data.getViewModel().getAllLamps().getValue().get(clickPosition));
         data.setLampSelected(data.getAllLamps().get(clickPosition));
         data.updateViewModelSelectedLamp();
-        System.out.println(data.getLampSelected().getNameLamp()+ "   " + data.getLampSelected().getColorValueRed() + "   " + data.getLampSelected().getColorValueGreen() + "   " + data.getLampSelected().getColorValueBlue());
         Fragment newFragment = new DetailFragment();
         data.setCurrentFragment(newFragment);
         data.getManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
-        //main.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DetailFragment()).commit();
     }
 
     Observer<ArrayList<Lamp>> listOfLampsObserver = new Observer<ArrayList<Lamp>>(){

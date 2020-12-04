@@ -32,14 +32,6 @@ public class Lamp {
         this.satValue = sat;
         this.briValue = bri;
 
-        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
-        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
-
-//        calculateHSBColor();
-
-        System.out.println("R: " + r + " " + this.colorValueRed + " G: " + g + " " + this.colorValueGreen + " B: " + b + " " + this.colorValueBlue);
-        System.out.println("H: " + this.hueValue + " S: " + this.satValue + " B: " + this.briValue);
-
         this.fadingSpeed = 500;
         this.discoSpeed = 500;
         this.fadingMode = false;
@@ -54,7 +46,6 @@ public class Lamp {
 
     public void setHueValue(int hueValue) {
         this.hueValue = hueValue;
-//        calculateRGBColor();
     }
 
     public int getSatValue() {
@@ -63,7 +54,6 @@ public class Lamp {
 
     public void setSatValue(int satValue) {
         this.satValue = satValue;
-//        calculateRGBColor();
     }
 
     public int getBriValue() {
@@ -72,7 +62,6 @@ public class Lamp {
 
     public void setBriValue(int briValue) {
         this.briValue = briValue;
-//        calculateRGBColor();
     }
 
     public String getLampID() {

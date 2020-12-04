@@ -59,7 +59,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.LampViewHolder> {
                 holder.onOrOffButton.setBackgroundColor(Color.GREEN);
                 Data.getInstance().getClient().turnLampOn(position);
             } else {
-                //holder.onOrOffButton.setBackgroundColor(context.getColor(R.color.button_OFF));
                 holder.onOrOffButton.setBackgroundColor(Color.RED);
                 Data.getInstance().getClient().turnLampOff(position);
             }
